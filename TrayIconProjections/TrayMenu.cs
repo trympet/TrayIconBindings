@@ -1,4 +1,6 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
@@ -32,7 +34,9 @@ namespace TrayIcon
             Dispose(disposing: false);
         }
 
+#if NET6_0_OR_GREATER
         [MemberNotNullWhen(false, nameof(_icon))]
+#endif
         private bool DisposedValue { get; set; }
 
         public ICollection<TrayMenuItem> Items

@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 using System.Windows.Input;
 using static TrayIcon.NativeMethods2;
 
@@ -9,7 +10,7 @@ namespace TrayIcon
         /// <summary>
         /// The win32 command ID of the menu item.
         /// </summary>
-        public uint CommandId { get; init; }
+        public uint CommandId { get; set; }
     }
 
     public class TrayMenuItem : IDisposable
