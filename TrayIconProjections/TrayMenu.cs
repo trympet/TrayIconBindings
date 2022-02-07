@@ -1,0 +1,131 @@
+﻿using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.Diagnostics.CodeAnalysis;
+using System.Drawing;
+using static TrayIcon.NativeMethods2;
+
+namespace TrayIcon
+{
+    public partial class TrayMenu : IDisposable
+    {
+        private readonly Action<TrayMenuItem> _onAddedDelegate;
+        private readonly Action<TrayMenuItem> _onRemovedDelegate;
+        private readonly bool _ownsItems;
+        private Icon? _icon;
+        private IntPtr _hInstance;
+        private ICollection<TrayMenuItem> _items = new ObservableCollection<TrayMenuItem>();
+        private ItemSubscription<TrayMenuItem>? _itemSubscription;
+
+        public TrayMenu(Icon icon, string tip, bool ownsItems = true)
+        {
+            _onAddedDelegate = OnItemAdded;
+            _onRemovedDelegate = OnItemRemoved;
+            _ownsItems = ownsItems;
+            _icon = icon ?? throw new ArgumentNullException(nameof(icon));
+            _hInstance = TrayMenuCreate(_icon.Handle, tip);
+            _itemSubscription = ItemSubscription.Create(_items, _onAddedDelegate, _onRemovedDelegate);
+            Show();
+        }
+
+        ~TrayMenu()
+        {
+            Dispose(disposing: false);
+        }
+
+        [MemberNotNullWhen(false, nameof(_icon))]
+        private bool DisposedValue { get; set; }
+
+        public ICollection<TrayMenuItem> Items
+        {
+            get => _items;
+            set
+            {
+                if (_items != value)
+                {
+                    foreach (var item in _items)
+                    {
+                        OnItemRemoved(item);
+                    }
+
+                    _items = value ?? throw new ArgumentNullException(nameof(value));
+                    _itemSubscription?.Dispose();
+
+                    foreach (var item in value)
+                    {
+                        OnItemAdded(item);
+                    }
+
+                    _itemSubscription = ItemSubscription.Create(value, _onAddedDelegate, _onRemovedDelegate);
+                }
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!DisposedValue)
+            {
+                if (disposing)
+                {
+                    TrayMenuClose(_hInstance);
+                    if (_ownsItems)
+                    {
+                        foreach (var item in _items)
+                        {
+                            item.Dispose();
+                        }
+                    }
+
+                    _icon.Dispose();
+                    _itemSubscription?.Dispose();
+                }
+
+                if (_hInstance != IntPtr.Zero)
+                {
+                    TrayMenuRelease(ref _hInstance);
+                    _hInstance = IntPtr.Zero;
+                }
+
+                _icon = null;
+                _itemSubscription = null;
+
+                DisposedValue = true;
+            }
+        }
+
+        public void Show()
+        {
+            if (!DisposedValue)
+            {
+                TrayMenuShow(_hInstance);
+            }
+        }
+
+        public void Hide()
+        {
+            if (!DisposedValue)
+            {
+                TrayMenuClose(_hInstance);
+            }
+        }
+
+        protected virtual void OnItemAdded(TrayMenuItem item)
+        {
+            TrayMenuAdd(_hInstance, item.HInstance);
+        }
+
+        protected virtual void OnItemRemoved(TrayMenuItem item)
+        {
+            TrayMenuRemove(_hInstance, item.HInstance);
+            if (_ownsItems)
+            {
+                item.Dispose();
+            }
+        }
+    }
+}
