@@ -10,6 +10,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrayIcon.Demo", "TrayIcon.D
 		{E06A0F4A-888C-41B3-A747-CC7088FF95B0} = {E06A0F4A-888C-41B3-A747-CC7088FF95B0}
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrayIconProjections", "TrayIconProjections\TrayIconProjections.csproj", "{FE708296-B52A-404C-B781-12D0EBD124AD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -64,6 +66,26 @@ Global
 		{DC61AC8B-0908-4BF2-96F8-4300B7D61D1C}.Release|x64.Build.0 = Release|Any CPU
 		{DC61AC8B-0908-4BF2-96F8-4300B7D61D1C}.Release|x86.ActiveCfg = Release|Any CPU
 		{DC61AC8B-0908-4BF2-96F8-4300B7D61D1C}.Release|x86.Build.0 = Release|Any CPU
+		{FE708296-B52A-404C-B781-12D0EBD124AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE708296-B52A-404C-B781-12D0EBD124AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE708296-B52A-404C-B781-12D0EBD124AD}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{FE708296-B52A-404C-B781-12D0EBD124AD}.Debug|ARM.Build.0 = Debug|Any CPU
+		{FE708296-B52A-404C-B781-12D0EBD124AD}.Debug|ARM64.ActiveCfg = Debug|Any CPU
+		{FE708296-B52A-404C-B781-12D0EBD124AD}.Debug|ARM64.Build.0 = Debug|Any CPU
+		{FE708296-B52A-404C-B781-12D0EBD124AD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FE708296-B52A-404C-B781-12D0EBD124AD}.Debug|x64.Build.0 = Debug|Any CPU
+		{FE708296-B52A-404C-B781-12D0EBD124AD}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FE708296-B52A-404C-B781-12D0EBD124AD}.Debug|x86.Build.0 = Debug|Any CPU
+		{FE708296-B52A-404C-B781-12D0EBD124AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE708296-B52A-404C-B781-12D0EBD124AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE708296-B52A-404C-B781-12D0EBD124AD}.Release|ARM.ActiveCfg = Release|Any CPU
+		{FE708296-B52A-404C-B781-12D0EBD124AD}.Release|ARM.Build.0 = Release|Any CPU
+		{FE708296-B52A-404C-B781-12D0EBD124AD}.Release|ARM64.ActiveCfg = Release|Any CPU
+		{FE708296-B52A-404C-B781-12D0EBD124AD}.Release|ARM64.Build.0 = Release|Any CPU
+		{FE708296-B52A-404C-B781-12D0EBD124AD}.Release|x64.ActiveCfg = Release|Any CPU
+		{FE708296-B52A-404C-B781-12D0EBD124AD}.Release|x64.Build.0 = Release|Any CPU
+		{FE708296-B52A-404C-B781-12D0EBD124AD}.Release|x86.ActiveCfg = Release|Any CPU
+		{FE708296-B52A-404C-B781-12D0EBD124AD}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

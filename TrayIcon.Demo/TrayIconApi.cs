@@ -1,7 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using System.Runtime.InteropServices;
 
-public class Test
+public class TrayIconApi
 {
     [DllImport("TrayIcon.dll", ExactSpelling = true, CharSet = CharSet.Unicode)]
     public static extern int TrayMenuCreate(IntPtr hIcon, [MarshalAs(UnmanagedType.LPWStr)] string tip, out IntPtr pInstance);

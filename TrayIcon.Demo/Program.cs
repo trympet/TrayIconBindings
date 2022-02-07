@@ -1,59 +1,99 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using System.Drawing;
-using System.Runtime.InteropServices;
-using static Windows.Win32.PInvoke;
+
 #pragma warning disable CA1416 // Validate platform compatibility
-
-public static class Program
+namespace TrayIcon.Demo
 {
-    [STAThread]
-    public static void Main()
+    public static class Program
     {
-        Console.WriteLine("Hello, World!");
-
-        //var resourceStream = typeof(Test).Assembly.GetManifestResourceStream("TrayIcon.Demo.tray-icon.ico");
-        var icon = new Icon(typeof(Test), "TrayIcon.Demo.tray-icon.ico");
-        var hIcon = icon.Handle;
-
-        Test.TrayMenuCreate(hIcon, "tip", out var hMenu);
-
-        Test.TrayMenuItemCreate((s, e) =>
+        [STAThread]
+        public static void Main()
         {
-            Console.WriteLine("Clicked1");
-        }, out var hItem1);
-
-        Test.TrayMenuItemCreate((s, e) =>
-        {
-            Console.WriteLine("Clicked2");
-        }, out var hItem2);
-
-        var item3Checked = false;
-        string item3Content = "a";
-        Test.TrayMenuItemCreate((s, e) =>
-        {
-            Test.TrayMenuItemIsChecked(s, item3Checked = !item3Checked);
-            item3Content += (char)(item3Content.Last() + 1);
-            Test.TrayMenuItemContent(s, item3Content);
-            Console.WriteLine("Clicked3");
-        }, out var hItem3);
-
-        Test.TrayMenuItemContent(hItem1, "item1");
-        Test.TrayMenuItemContent(hItem2, "item2");
-        Test.TrayMenuItemContent(hItem3, item3Content);
-
-        Test.TrayMenuAdd(hMenu, hItem1);
-        Test.TrayMenuAdd(hMenu, hItem2);
-        Test.TrayMenuAdd(hMenu, hItem3);
-
-        Test.TrayMenuShow(hMenu);
-
-        while (GetMessage(out var msg, default, 0, 0))
-        {
-            TranslateMessage(in msg);
-            DispatchMessage(in msg);
+            char? c = default;
+            while (c == default)
+            {
+                Console.WriteLine("1) Managed demo");
+                Console.WriteLine("2) PInvoke demo");
+                var input = Console.ReadLine();
+                switch (c = input?.FirstOrDefault())
+                {
+                    case '1':
+                        ManagedDemo();
+                        break;
+                    case '2':
+                        PInvokeDemo();
+                        break;
+                    default:
+                        Console.WriteLine("Invalid input.");
+                        c = default;
+                        continue;
+                }
+            }
         }
 
+        private static void ManagedDemo()
+        {
+            var icon = new Icon(typeof(TrayIconApi), "TrayIcon.Demo.tray-icon.ico");
+            var menu = new TrayMenu(icon, "Tooltip", true);
+            var item1 = new TrayMenuItem { Content = "Item1" };
 
-        Thread.Sleep(1111);
+            int itemNumber = 1;
+            void OnClicked(object? sender, EventArgs e)
+            {
+                if (sender is TrayMenuItem item)
+                {
+                    item.IsChecked = !item.IsChecked;
+                    Console.WriteLine($"{item.Content} clicked.");
+                    var newItem = new TrayMenuItem { Content = $"Item{++itemNumber}" };
+                    newItem.Click += OnClicked;
+                    menu.Items.Add(newItem);
+                }
+            }
+
+            item1.Click += OnClicked;
+            menu.Items.Add(item1);
+
+            NativeMethods.RunLoop();
+        }
+
+        private static void PInvokeDemo()
+        {
+            var icon = new Icon(typeof(TrayIconApi), "TrayIcon.Demo.tray-icon.ico");
+            var hIcon = icon.Handle;
+
+            TrayIconApi.TrayMenuCreate(hIcon, "tip", out var hMenu);
+
+            TrayIconApi.TrayMenuItemCreate((s, e) =>
+            {
+                Console.WriteLine("Clicked1");
+            }, out var hItem1);
+
+            TrayIconApi.TrayMenuItemCreate((s, e) =>
+            {
+                Console.WriteLine("Clicked2");
+            }, out var hItem2);
+
+            var item3Checked = false;
+            string item3Content = "a";
+            TrayIconApi.TrayMenuItemCreate((s, e) =>
+            {
+                TrayIconApi.TrayMenuItemIsChecked(s, item3Checked = !item3Checked);
+                item3Content += (char)(item3Content.Last() + 1);
+                TrayIconApi.TrayMenuItemContent(s, item3Content);
+                Console.WriteLine("Clicked3");
+            }, out var hItem3);
+
+            TrayIconApi.TrayMenuItemContent(hItem1, "item1");
+            TrayIconApi.TrayMenuItemContent(hItem2, "item2");
+            TrayIconApi.TrayMenuItemContent(hItem3, item3Content);
+
+            TrayIconApi.TrayMenuAdd(hMenu, hItem1);
+            TrayIconApi.TrayMenuAdd(hMenu, hItem2);
+            TrayIconApi.TrayMenuAdd(hMenu, hItem3);
+
+            TrayIconApi.TrayMenuShow(hMenu);
+
+            NativeMethods.RunLoop();
+        }
     }
 }
