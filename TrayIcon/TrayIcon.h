@@ -1,6 +1,7 @@
 #pragma once
 #include "TrayMenuItem.h"
 #include "TrayMenuPopup.h"
+#include "TrayIconManager.h"
 class TrayIcon
 {
 private:
@@ -8,12 +9,12 @@ private:
 	UINT m_iconNotifyWm;
 	UINT m_taskbarRestartWm{};
 	BOOL m_trayIconCreated = false;
-	NOTIFYICONDATA m_trayIconData{};
+	TrayIconDataWrapper& m_trayIconData = TrayIconManager::Create();
 	TrayMenuPopup* m_trayMenuPopup = NULL;
 	HWND m_trayIconHwnd = NULL;
 	std::vector<std::reference_wrapper<TrayMenuItem>> m_items;
 public:
-	TrayIcon(const HICON hIcon, const LPWSTR tip) noexcept;
+	TrayIcon(const HICON hIcon, const LPWSTR tip);
 	~TrayIcon();
 	void AddItem(TrayMenuItem& pTrayMenuItem) noexcept;
 	void RemoveItem(TrayMenuItem& pTrayMenuItem);

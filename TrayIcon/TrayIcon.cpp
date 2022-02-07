@@ -9,7 +9,7 @@ EXTERN_C static IMAGE_DOS_HEADER __ImageBase;
 static constexpr GUID s_trayIconGuid =
 { 0xeceaec05, 0x4d8b, 0x4744, { 0x94, 0xa2, 0x54, 0x85, 0x9b, 0x6c, 0x3b, 0x70 } };
 
-TrayIcon::TrayIcon(const HICON hIcon, const LPWSTR tip) noexcept
+TrayIcon::TrayIcon(const HICON hIcon, const LPWSTR tip)
 {
 	m_iconNotifyWm = RegisterWindowMessage(WM_TRAYNOTIFY);
 
@@ -23,7 +23,10 @@ TrayIcon::TrayIcon(const HICON hIcon, const LPWSTR tip) noexcept
 		.lpszClassName = TrayIconWndClass,
 	};
 
-	RegisterClass(&wc);
+	if (!RegisterClass(&wc)) {
+		throw Win32Exception("Failed to register tray menu class.");
+	}
+
 	auto hWnd = CreateWindowEx(0L,
 		wc.lpszClassName,
 		TrayIconWndClass,
@@ -37,19 +40,22 @@ TrayIcon::TrayIcon(const HICON hIcon, const LPWSTR tip) noexcept
 		wc.hInstance,
 		this);
 
-	m_trayIconData.cbSize = sizeof(NOTIFYICONDATA);
-	m_trayIconData.hIcon = hIcon;
-	m_trayIconData.hWnd = hWnd;
-	m_trayIconData.guidItem = s_trayIconGuid;
-	m_trayIconData.uVersion = NOTIFYICON_VERSION_4;
-	//m_trayIconData.uID = m_iconNotifyWm;
-	m_trayIconData.uCallbackMessage = m_iconNotifyWm;
-	wcscpy_s(m_trayIconData.szTip, sizeof(m_trayIconData.szTip) / sizeof(WCHAR), tip);
-	m_trayIconData.uFlags = NIF_ICON | NIF_SHOWTIP | NIF_MESSAGE | NIF_GUID;
+	if (hWnd == NULL) {
+		throw Win32Exception("Failed to create tray menu window.");
+	}
+
+	auto& trayIconData = m_trayIconData.Create();
+	trayIconData.cbSize = sizeof(NOTIFYICONDATA);
+	trayIconData.hIcon = hIcon;
+	trayIconData.hWnd = hWnd;
+	trayIconData.uID = m_iconNotifyWm;
+	trayIconData.uCallbackMessage = m_iconNotifyWm;
+	wcscpy_s(trayIconData.szTip, sizeof(trayIconData.szTip) / sizeof(WCHAR), tip);
+	trayIconData.uFlags = NIF_ICON | NIF_SHOWTIP | NIF_MESSAGE | NIF_GUID;
 	ChangeWindowMessageFilterEx(hWnd, WM_COMMAND, MSGFLT_ALLOW, NULL);
 
 	if (!m_trayIconCreated) {
-		m_trayIconCreated = Shell_NotifyIcon(NIM_ADD, &m_trayIconData);
+		m_trayIconCreated = Shell_NotifyIcon(NIM_ADD, &trayIconData);
 	}
 }
 
@@ -57,6 +63,10 @@ TrayIcon::~TrayIcon()
 {
 	if (m_trayIconHwnd) {
 		SendMessageTimeout(m_trayIconHwnd, WM_CLOSE, 0, 0, SMTO_ABORTIFHUNG | SMTO_BLOCK, 3999, NULL);
+	}
+
+	if (!m_trayIconCreated && m_trayIconData.Exists()) {
+		TrayIconManager::Free(m_trayIconData);
 	}
 
 	delete m_trayMenuPopup;
@@ -123,11 +133,11 @@ LRESULT TrayIcon::TrayIconWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM
 		break;
 
 	case WM_DESTROY:
-		if (m_trayIconCreated) {
-			Shell_NotifyIcon(NIM_DELETE, &m_trayIconData);
-			m_trayIconCreated = false;
+		if (m_trayIconCreated && m_trayIconData.Exists()) {
+			Shell_NotifyIcon(NIM_DELETE, &m_trayIconData.get());
 		}
 
+		m_trayIconCreated = false;
 		PostQuitMessage(0);
 		break;
 
@@ -136,14 +146,16 @@ LRESULT TrayIcon::TrayIconWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM
 		break;
 
 	case WM_COMMAND:
-		for (const auto x : m_items) {
-			x.get().OnCommand(wParam);
+		for (size_t i = 0; i < m_items.size(); i++)
+		{
+			m_items.at(i).get().OnCommand(wParam);
+
 		}
 		break;
 
 	case WM_WINDOWPOSCHANGING:
-		if (!m_trayIconCreated) {
-			m_trayIconCreated = Shell_NotifyIcon(NIM_ADD, &m_trayIconData);
+		if (!m_trayIconCreated && m_trayIconData.Exists()) {
+			m_trayIconCreated = Shell_NotifyIcon(NIM_ADD, &m_trayIconData.get());
 		}
 		break;
 	case WM_PAINT:
@@ -166,7 +178,9 @@ LRESULT TrayIcon::TrayIconWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM
 			}
 		}
 		else if (message == m_taskbarRestartWm) {
-			m_trayIconCreated = Shell_NotifyIcon(NIM_ADD, &m_trayIconData);
+			if (m_trayIconData.Exists()) {
+				m_trayIconCreated = Shell_NotifyIcon(NIM_ADD, &m_trayIconData.get());
+			}
 		}
 
 		break;

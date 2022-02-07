@@ -69,7 +69,7 @@ constexpr UINT TrayMenuItem::GetFlags() const noexcept
 
 void TrayMenuItem::RefreshIfAttached() {
 	if (m_hMenu) {
-		Attach(m_hWnd, m_hMenu);
+		//Attach(m_hWnd, m_hMenu);
 		DrawMenuBar(m_hWnd);
 	}
 }

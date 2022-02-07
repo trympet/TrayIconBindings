@@ -176,6 +176,7 @@
     <ClInclude Include="MyTrayMenu.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="TrayIcon.h" />
+    <ClInclude Include="TrayIconManager.h" />
     <ClInclude Include="TrayMenuItem.h" />
     <ClInclude Include="TrayMenuPopup.h" />
     <ClInclude Include="Win32Exception.h" />
@@ -191,6 +192,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="TrayIcon.cpp" />
+    <ClCompile Include="TrayIconManager.cpp" />
     <ClCompile Include="TrayMenuItem.cpp" />
     <ClCompile Include="TrayMenuPopup.cpp" />
     <ClCompile Include="Win32Exception.cpp" />
