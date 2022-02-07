@@ -11,8 +11,8 @@ public static class Program
     {
         Console.WriteLine("Hello, World!");
 
-        //var resourceStream = typeof(Test).Assembly.GetManifestResourceStream("ConsoleApp1.tray-icon.ico");
-        var icon = new Icon(typeof(Test), "ConsoleApp1.tray-icon.ico");
+        //var resourceStream = typeof(Test).Assembly.GetManifestResourceStream("TrayIcon.Demo.tray-icon.ico");
+        var icon = new Icon(typeof(Test), "TrayIcon.Demo.tray-icon.ico");
         var hIcon = icon.Handle;
 
         Test.TrayMenuCreate(hIcon, "tip", out var hMenu);
@@ -46,7 +46,6 @@ public static class Program
         Test.TrayMenuAdd(hMenu, hItem3);
 
         Test.TrayMenuShow(hMenu);
-
 
         while (GetMessage(out var msg, default, 0, 0))
         {

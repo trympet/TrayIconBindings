@@ -27,8 +27,8 @@
   </ItemGroup>
 
   <ItemGroup>
-	  <Content Condition="'$(Configuration)' == 'Debug'" Include="..\x64\Debug\Dll1.dll" CopyToOutputDirectory="Always" />
-	  <Content Condition="'$(Configuration)' == 'Release'" Include="..\x64\Release\Dll1.dll" CopyToOutputDirectory="Always" />
+	  <Content Condition="'$(Configuration)' == 'Debug'" Include="..\x64\Debug\TrayIcon.dll" CopyToOutputDirectory="Always" />
+	  <Content Condition="'$(Configuration)' == 'Release'" Include="..\x64\Release\TrayIcon.dll" CopyToOutputDirectory="Always" />
   </ItemGroup>
 
 </Project>

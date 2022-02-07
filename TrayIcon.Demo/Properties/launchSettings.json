@@ -1,6 +1,6 @@
 {
   "profiles": {
-    "ConsoleApp1": {
+    "TrayIcon.Demo": {
       "commandName": "Project",
       "nativeDebugging": true
     }
