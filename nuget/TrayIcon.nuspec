@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata minClientVersion="2.8.6">
+        <id>TrayIcon</id>
+        <version>0.0.0-SpecifyVersionOnCommandline</version>
+        <title>TrayIcon</title>
+        <authors>Trym Lund Flogard</authors>
+        <owners>trym2001@hotmail.com</owners>
+        <description>An easy-to-use Tray Icon API for .NET</description>
+        <projectUrl>https://github.com/trympet/TrayIconBindings</projectUrl>
+		<repository type="git" url="https://github.com/trympet/TrayIconBindings.git" />
+        <license type="expression">MIT</license>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <copyright>© Trym Lund Flogard. All rights reserved.</copyright>
+        <tags>tray icon win32 systray notify mvvm .net 6</tags>
+    </metadata>
+
+    <files>
+        <file target="build\net6.0\TrayIcon.managed.targets"                          src="nuget\TrayIcon.managed.targets" />
+        <file target="build\net45\TrayIcon.managed.targets"                           src="nuget\TrayIcon.managed.targets" />
+  
+        <file target="lib\net6.0\TrayIconProjections.dll"        src="TrayIconProjections\bin\Release\net6.0\TrayIconProjections.dll" />
+        <file target="lib\net45\TrayIconProjections.dll"         src="TrayIconProjections\bin\Release\net45\TrayIconProjections.dll" />
+  
+        <file target="runtimes\win10-x64\native\TrayIcon.dll" src="x64\Release\TrayIcon.dll" />
+        <file target="runtimes\win10-x86\native\TrayIcon.dll" src="Release\TrayIcon.dll" />
+
+    </files>
+</package>
