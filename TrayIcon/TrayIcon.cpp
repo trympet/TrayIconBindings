@@ -51,7 +51,7 @@ TrayIcon::TrayIcon(const HICON hIcon, const LPWSTR tip)
 	trayIconData.uID = m_iconNotifyWm;
 	trayIconData.uCallbackMessage = m_iconNotifyWm;
 	wcscpy_s(trayIconData.szTip, sizeof(trayIconData.szTip) / sizeof(WCHAR), tip);
-	trayIconData.uFlags = NIF_ICON | NIF_SHOWTIP | NIF_MESSAGE | NIF_GUID;
+	trayIconData.uFlags = NIF_ICON | NIF_TIP | NIF_MESSAGE | NIF_GUID;
 	ChangeWindowMessageFilterEx(hWnd, WM_COMMAND, MSGFLT_ALLOW, NULL);
 
 	if (!m_trayIconCreated) {
