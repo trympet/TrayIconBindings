@@ -13,13 +13,14 @@
 
 
 
-TRAYAPI TrayMenuCreate(const HICON hIcon, const _In_ LPWSTR tip, _Outptr_result_nullonfailure_ MyTrayMenu** pInstance) noexcept
+TRAYAPI TrayMenuCreate(const HICON hIcon, const _In_ LPWSTR tip, const _In_ ClickHandler onDoubleClick, _Outptr_result_nullonfailure_ MyTrayMenu** pInstance) noexcept
 {
 	*pInstance = NULL;
 	GUARD_NOT_NULL(hIcon);
+	GUARD_NOT_NULL(onDoubleClick);
 
 	API_TRY
-		* pInstance = new MyTrayMenu(hIcon, tip);
+		* pInstance = new MyTrayMenu(hIcon, tip, onDoubleClick);
 	API_CATCH(
 		if (pInstance) {
 			if (*pInstance) {
@@ -82,7 +83,7 @@ TRAYAPI TrayMenuSetIcon(_In_ MyTrayMenu* pInstance, const HICON hIcon) noexcept
 	return S_OK;
 }
 
-TRAYAPI TrayMenuItemCreate(const _In_ TrayMenuItemClicked onClicked, _Outptr_result_nullonfailure_ TrayMenuItem** pInstance) noexcept
+TRAYAPI TrayMenuItemCreate(const _In_ TrayMenuItemClickHandler onClicked, _Outptr_result_nullonfailure_ TrayMenuItem** pInstance) noexcept
 {
 	GUARD_NOT_NULL(onClicked);
 	GUARD_NOT_NULL(pInstance);

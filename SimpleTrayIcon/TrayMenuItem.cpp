@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "TrayMenuItem.h"
 
-TrayMenuItem::TrayMenuItem(const TrayMenuItemClicked onClicked) noexcept
+TrayMenuItem::TrayMenuItem(const TrayMenuItemClickHandler onClicked) noexcept
 {
 	m_onClicked = onClicked;
 }

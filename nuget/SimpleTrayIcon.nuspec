@@ -25,7 +25,7 @@
         <file target="build\net6.0\SimpleTrayIcon.managed.targets"  src="nuget\SimpleTrayIcon.managed.targets" />
         <file target="build\net472\SimpleTrayIcon.managed.targets"  src="nuget\SimpleTrayIcon.managed.targets" />
   
-        <file target="lib\net6.0\SimpleTrayIconProjections.dll"     src="bin\AnyCPU\Release\SimpleTrayIconProjections\net6.0\ref\SimpleTrayIconProjections.dll" />
+        <file target="lib\net6.0\SimpleTrayIconProjections.dll"     src="bin\AnyCPU\Release\SimpleTrayIconProjections\net6.0\SimpleTrayIconProjections.dll" />
         <file target="lib\net6.0\SimpleTrayIconProjections.pdb"     src="bin\AnyCPU\Release\SimpleTrayIconProjections\net6.0\SimpleTrayIconProjections.pdb" />
         <file target="lib\net472\SimpleTrayIconProjections.dll"     src="bin\AnyCPU\Release\SimpleTrayIconProjections\net472\SimpleTrayIconProjections.dll" />
         <file target="lib\net472\SimpleTrayIconProjections.pdb"     src="bin\AnyCPU\Release\SimpleTrayIconProjections\net472\SimpleTrayIconProjections.pdb" />

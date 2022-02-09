@@ -4,12 +4,14 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
+using System.Windows.Input;
 using static SimpleTrayIcon.NativeMethods;
 
 namespace SimpleTrayIcon
 {
     public partial class TrayMenu : IDisposable
     {
+        private readonly ClickHandler _onDoubleClickDelegate;
         private readonly Action<TrayMenuItemBase> _onAddedDelegate;
         private readonly Action<TrayMenuItemBase> _onRemovedDelegate;
         private readonly bool _ownsItems;
@@ -20,11 +22,12 @@ namespace SimpleTrayIcon
 
         public TrayMenu(Icon icon, string tip, bool ownsItems = true)
         {
+            _onDoubleClickDelegate = OnDoubleClick;
             _onAddedDelegate = OnItemAdded;
             _onRemovedDelegate = OnItemRemoved;
             _ownsItems = ownsItems;
             _icon = icon ?? throw new ArgumentNullException(nameof(icon));
-            _hInstance = TrayMenuCreate(_icon.Handle, tip);
+            _hInstance = TrayMenuCreate(_icon.Handle, tip, _onDoubleClickDelegate);
             _itemSubscription = ItemSubscription.Create(_items, _onAddedDelegate, _onRemovedDelegate);
             Show();
         }
@@ -33,6 +36,10 @@ namespace SimpleTrayIcon
         {
             Dispose(disposing: false);
         }
+
+        public event EventHandler<EventArgs>? DoubleClick;
+
+        public ICommand Command { get; set; }
 
 #if NET6_0_OR_GREATER
         [MemberNotNullWhen(false, nameof(_icon))]
@@ -97,6 +104,22 @@ namespace SimpleTrayIcon
             }
         }
 
+        public void Show()
+        {
+            if (!DisposedValue)
+            {
+                TrayMenuShow(_hInstance);
+            }
+        }
+
+        public void Hide()
+        {
+            if (!DisposedValue)
+            {
+                TrayMenuClose(_hInstance);
+            }
+        }
+
         protected virtual void Dispose(bool disposing)
         {
             if (!DisposedValue)
@@ -129,22 +152,6 @@ namespace SimpleTrayIcon
             }
         }
 
-        public void Show()
-        {
-            if (!DisposedValue)
-            {
-                TrayMenuShow(_hInstance);
-            }
-        }
-
-        public void Hide()
-        {
-            if (!DisposedValue)
-            {
-                TrayMenuClose(_hInstance);
-            }
-        }
-
         protected virtual void OnItemAdded(TrayMenuItemBase item)
         {
             TrayMenuAdd(_hInstance, item.HInstance);
@@ -156,6 +163,16 @@ namespace SimpleTrayIcon
             if (_ownsItems)
             {
                 (item as IDisposable)?.Dispose();
+            }
+        }
+
+        protected virtual void OnDoubleClick()
+        {
+            DoubleClick?.Invoke(this, EventArgs.Empty);
+
+            if (Command is not null && Command.CanExecute(this))
+            {
+                Command.Execute(this);
             }
         }
     }

@@ -6,10 +6,11 @@
 
 using namespace std;
 
-MyTrayMenu::MyTrayMenu(const HICON hIcon, const LPWSTR tip) noexcept
+MyTrayMenu::MyTrayMenu(const HICON hIcon, const LPWSTR tip, const ClickHandler onDoubleClick) noexcept
 {
 	m_hIcon = hIcon;
 	wcscpy_s(m_tip, tip);
+	m_onDoubleClick = onDoubleClick;
 }
 
 MyTrayMenu::~MyTrayMenu() noexcept
@@ -20,7 +21,7 @@ MyTrayMenu::~MyTrayMenu() noexcept
 void MyTrayMenu::Show() noexcept
 {
 	if (!m_trayIcon) {
-		m_trayIcon = new TrayIcon(m_hIcon, m_tip);
+		m_trayIcon = new TrayIcon(m_hIcon, m_tip, m_onDoubleClick);
 	}
 
 	while (!m_items.empty()) {

@@ -9,8 +9,9 @@ EXTERN_C static IMAGE_DOS_HEADER __ImageBase;
 static constexpr GUID s_trayIconGuid =
 { 0xeceaec05, 0x4d8b, 0x4744, { 0x94, 0xa2, 0x54, 0x85, 0x9b, 0x6c, 0x3b, 0x70 } };
 
-TrayIcon::TrayIcon(const HICON hIcon, const LPWSTR tip)
+TrayIcon::TrayIcon(const HICON hIcon, const LPWSTR tip, const ClickHandler onDoubleClick)
 {
+	m_onDoubleClick = onDoubleClick;
 	m_iconNotifyWm = RegisterWindowMessage(WM_TRAYNOTIFY);
 
 	const WNDCLASS wc = {
@@ -188,6 +189,11 @@ LRESULT TrayIcon::TrayIconWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM
 				}
 
 				m_trayMenuPopup->Track();
+				break;
+			case WM_LBUTTONDBLCLK:
+				if (m_onDoubleClick != NULL) {
+					m_onDoubleClick();
+				}
 				break;
 			}
 		}
