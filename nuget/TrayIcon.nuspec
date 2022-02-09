@@ -26,14 +26,14 @@
         <file target="build\net472\TrayIcon.managed.targets"  src="nuget\TrayIcon.managed.targets" />
   
         <file target="lib\net6.0\TrayIconProjections.dll"     src="bin\AnyCPU\Release\TrayIconProjections\net6.0\ref\TrayIconProjections.dll" />
-        <file target="lib\net6.0\TrayIconProjections.dll"     src="bin\AnyCPU\Release\TrayIconProjections\net6.0\TrayIconProjections.pdb" />
+        <file target="lib\net6.0\TrayIconProjections.pdb"     src="bin\AnyCPU\Release\TrayIconProjections\net6.0\TrayIconProjections.pdb" />
         <file target="lib\net472\TrayIconProjections.dll"     src="bin\AnyCPU\Release\TrayIconProjections\net472\TrayIconProjections.dll" />
-        <file target="lib\net472\TrayIconProjections.dll"     src="bin\AnyCPU\Release\TrayIconProjections\net472\TrayIconProjections.pdb" />
+        <file target="lib\net472\TrayIconProjections.pdb"     src="bin\AnyCPU\Release\TrayIconProjections\net472\TrayIconProjections.pdb" />
   
         <file target="runtimes\win10-x64\native\TrayIcon.dll" src="bin\x64\Release\TrayIcon\TrayIcon.dll" />
-        <file target="runtimes\win10-x64\native\TrayIcon.dll" src="bin\x64\Release\TrayIcon\TrayIcon.pdb" />
+        <file target="runtimes\win10-x64\native\TrayIcon.pdb" src="bin\x64\Release\TrayIcon\TrayIcon.pdb" />
         <file target="runtimes\win10-x86\native\TrayIcon.dll" src="bin\x86\Release\TrayIcon\TrayIcon.dll" />
-        <file target="runtimes\win10-x86\native\TrayIcon.dll" src="bin\x86\Release\TrayIcon\TrayIcon.pdb" />
+        <file target="runtimes\win10-x86\native\TrayIcon.pdb" src="bin\x86\Release\TrayIcon\TrayIcon.pdb" />
 
     </files>
 </package>
