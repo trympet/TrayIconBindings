@@ -14,4 +14,4 @@ dotnet build TrayIconProjections -c:Release /p:Platform=AnyCPU
 msbuild TrayIcon /p:Platform=Win32 /p:Configuration=Release
 dotnet build TrayIconProjections -c:Release /p:Platform=AnyCPU
  
- nuget pack nuget\TrayIcon.nuspec -nopackageanalysis -basepath . -outputdirectory .\bin -version $version
+ nuget pack nuget\TrayIcon.nuspec -nopackageanalysis -basepath . -outputdirectory .\bin -version $version -properties  commit=$(git rev-parse HEAD)
