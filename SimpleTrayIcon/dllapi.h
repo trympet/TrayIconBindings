@@ -9,6 +9,7 @@ TRAYAPI TrayMenuShow(_In_ MyTrayMenu* pInstance) noexcept;
 TRAYAPI TrayMenuClose(_In_ MyTrayMenu* pInstance) noexcept;
 TRAYAPI TrayMenuAdd(_In_ MyTrayMenu* pInstance, _In_ TrayMenuItemBase* pTrayMenuItem) noexcept;
 TRAYAPI TrayMenuRemove(_In_ MyTrayMenu* pInstance, _In_ TrayMenuItemBase* pTrayMenuItem) noexcept;
+TRAYAPI TrayMenuSetIcon(_In_ MyTrayMenu* pInstance, const HICON hIcon) noexcept;
 
 TRAYAPI TrayMenuItemCreate(const _In_ TrayMenuItemClicked onClicked, _Outptr_result_nullonfailure_ TrayMenuItem** pInstance) noexcept;
 TRAYAPI TrayMenuItemRelease(const _Inout_ TrayMenuItem** pInstance) noexcept;

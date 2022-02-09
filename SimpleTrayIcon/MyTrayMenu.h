@@ -22,6 +22,7 @@ public:
 	void AddItem(TrayMenuItemBase& pTrayMenuItem) noexcept;
 	void RemoveItem(TrayMenuItemBase& pTrayMenuItem) noexcept;
 	void Close();
+	void SetIcon(const HICON hIcon) noexcept;
 
 private:
 	BOOL RemoveItem(std::queue<std::reference_wrapper<TrayMenuItemBase>>& pQueue, const TrayMenuItemBase& pItem);

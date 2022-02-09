@@ -11,7 +11,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="tray-icon.ico" />
+    <EmbeddedResource Include="*.ico" />
   </ItemGroup>
 
   <ItemGroup>

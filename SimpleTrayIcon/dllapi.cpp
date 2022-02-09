@@ -74,6 +74,14 @@ TRAYAPI TrayMenuRemove(_In_ MyTrayMenu* pInstance, _In_ TrayMenuItemBase* pTrayM
 	return S_OK;
 }
 
+TRAYAPI TrayMenuSetIcon(_In_ MyTrayMenu* pInstance, const HICON hIcon) noexcept
+{
+	GUARD_NOT_NULL(pInstance);
+	GUARD_NOT_NULL(hIcon);
+	pInstance->SetIcon(hIcon);
+	return S_OK;
+}
+
 TRAYAPI TrayMenuItemCreate(const _In_ TrayMenuItemClicked onClicked, _Outptr_result_nullonfailure_ TrayMenuItem** pInstance) noexcept
 {
 	GUARD_NOT_NULL(onClicked);

@@ -100,6 +100,20 @@ void TrayIcon::RemoveItem(TrayMenuItemBase& item)
 	}
 }
 
+void TrayIcon::SetIcon(const HICON hIcon) noexcept
+{
+	if (!m_trayIconData.Exists()) {
+		return;
+	}
+
+	auto& trayIconData = m_trayIconData.get();
+	trayIconData.hIcon = hIcon;
+
+	if (m_trayIconCreated) {
+		m_trayIconCreated = Shell_NotifyIcon(NIM_MODIFY, &trayIconData);
+	}
+}
+
 LRESULT CALLBACK TrayIcon::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) noexcept
 {
 	if (message != WM_NCCREATE) {

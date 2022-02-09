@@ -70,6 +70,33 @@ namespace SimpleTrayIcon
             GC.SuppressFinalize(this);
         }
 
+        public Icon Icon
+        {
+            get
+            {
+                if (DisposedValue)
+                {
+                    throw new ObjectDisposedException(nameof(TrayMenu));
+                }
+
+                return _icon;
+            }
+            set
+            {
+                if (DisposedValue)
+                {
+                    throw new ObjectDisposedException(nameof(TrayMenu));
+                }
+
+                if (_icon != value)
+                {
+                    _icon.Dispose();
+                    _icon = value;
+                    TrayMenuSetIcon(_hInstance, value.Handle);
+                }
+            }
+        }
+
         protected virtual void Dispose(bool disposing)
         {
             if (!DisposedValue)

@@ -18,6 +18,7 @@ public:
 	~TrayIcon();
 	void AddItem(TrayMenuItemBase& pTrayMenuItem) noexcept;
 	void RemoveItem(TrayMenuItemBase& pTrayMenuItem);
+	void SetIcon(const HICON hIcon) noexcept;
 private:
 	static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) noexcept;
 	inline static TrayIcon* GetInstance(const HWND hWnd);

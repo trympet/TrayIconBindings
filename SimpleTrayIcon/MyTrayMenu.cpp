@@ -60,6 +60,14 @@ void MyTrayMenu::Close()
 	}
 }
 
+void MyTrayMenu::SetIcon(const HICON hIcon) noexcept
+{
+	m_hIcon = hIcon;
+	if (m_trayIcon) {
+		m_trayIcon->SetIcon(hIcon);
+	}
+}
+
 BOOL MyTrayMenu::RemoveItem(std::queue<std::reference_wrapper<TrayMenuItemBase>>& pQueue, const TrayMenuItemBase& pItem) {
 	const auto max = pQueue.size();
 	int i = 0;

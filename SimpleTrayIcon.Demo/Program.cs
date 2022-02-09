@@ -6,6 +6,8 @@ namespace SimpleTrayIcon.Demo
 {
     public static class Program
     {
+        private static int iconId = 1;
+
         [STAThread]
         public static void Main()
         {
@@ -33,8 +35,7 @@ namespace SimpleTrayIcon.Demo
 
         private static void ManagedDemo()
         {
-            var icon = new Icon(typeof(SimpleTrayIconApi), "SimpleTrayIcon.Demo.tray-icon.ico");
-            var menu = new TrayMenu(icon, "Tooltip", true);
+            var menu = new TrayMenu(GetNextIcon(), "Tooltip", true);
             var item1 = new TrayMenuItem { Content = "Item1" };
 
             int itemNumber = 1;
@@ -42,6 +43,7 @@ namespace SimpleTrayIcon.Demo
             {
                 if (sender is TrayMenuItem item)
                 {
+                    menu.Icon = GetNextIcon();
                     item.IsChecked = !item.IsChecked;
                     Console.WriteLine($"{item.Content} clicked.");
                     var newItem = new TrayMenuItem { Content = $"Item{++itemNumber}" };
@@ -55,6 +57,12 @@ namespace SimpleTrayIcon.Demo
             menu.Items.Add(item1);
 
             NativeMethods.RunLoop();
+        }
+
+        private static Icon GetNextIcon()
+        {
+            iconId = iconId % 2 + 1;
+            return new Icon(typeof(SimpleTrayIconApi), $"SimpleTrayIcon.Demo.tray-icon-{iconId}.ico");
         }
 
         private static void PInvokeDemo()

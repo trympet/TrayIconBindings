@@ -29,6 +29,9 @@ namespace SimpleTrayIcon
         [DllImport(SimpleTrayIcon, ExactSpelling = true, CharSet = CharSet.Unicode, PreserveSig = false)]
         public static extern void TrayMenuRemove(IntPtr pInstance, IntPtr pTrayMenuItem);
 
+        [DllImport(SimpleTrayIcon, ExactSpelling = true, CharSet = CharSet.Unicode, PreserveSig = false)]
+        public static extern void TrayMenuSetIcon(IntPtr pInstance, IntPtr hIcon);
+
 
         public delegate void OnClicked(IntPtr sender, uint id);
 
