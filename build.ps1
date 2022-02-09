@@ -9,8 +9,9 @@ else {
     Write-Host "nbgv not found. reverting to $version."
 }
  
- msbuild TrayIcon /p:Platform=x64 /p:Configuration=Release
- msbuild TrayIcon /p:Platform=win32 /p:Configuration=Release
- dotnet build TrayIconProjections -c:Release
+msbuild TrayIcon /p:Platform=x64 /p:Configuration=Release
+dotnet build TrayIconProjections -c:Release /p:Platform=AnyCPU
+msbuild TrayIcon /p:Platform=Win32 /p:Configuration=Release
+dotnet build TrayIconProjections -c:Release /p:Platform=AnyCPU
  
  nuget pack nuget\TrayIcon.nuspec -nopackageanalysis -basepath . -outputdirectory .\bin -version $version

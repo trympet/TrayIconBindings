@@ -6,4 +6,18 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
+
+  <PropertyGroup>
+    <__Platform Condition="'$(Platform)' == 'Win32'">x86</__Platform>
+    <__Platform Condition="'$(Platform)' != 'Win32'">$(Platform)</__Platform>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <FullPlatform>$(__Platform)</FullPlatform>
+    <BinariesDirectory>$(MSBuildThisFileDirectory)bin</BinariesDirectory>
+    <OutputPath>$(BinariesDirectory)\$(FullPlatform)\$(Configuration)\$(MSBuildProjectName)\$(TargetFramework)</OutputPath>
+    <OutDir>$(OutputPath)\</OutDir>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
 </Project>
