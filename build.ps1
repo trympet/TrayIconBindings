@@ -9,9 +9,9 @@ else {
     Write-Host "nbgv not found. reverting to $version."
 }
  
-msbuild TrayIcon /p:Platform=x64 /p:Configuration=Release
-dotnet build TrayIconProjections -c:Release /p:Platform=AnyCPU
-msbuild TrayIcon /p:Platform=Win32 /p:Configuration=Release
-dotnet build TrayIconProjections -c:Release /p:Platform=AnyCPU
+msbuild SimpleTrayIcon /p:Platform=x64 /p:Configuration=Release
+dotnet build SimpleTrayIconProjections -c:Release /p:Platform=AnyCPU
+msbuild SimpleTrayIcon /p:Platform=Win32 /p:Configuration=Release
+dotnet build SimpleTrayIconProjections -c:Release /p:Platform=AnyCPU
  
- nuget pack nuget\TrayIcon.nuspec -nopackageanalysis -basepath . -outputdirectory .\bin -version $version
+ nuget pack nuget\SimpleTrayIcon.nuspec -nopackageanalysis -basepath . -outputdirectory .\bin -version $version -properties  commit=$(git rev-parse HEAD)

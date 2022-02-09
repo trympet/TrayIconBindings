@@ -19,12 +19,12 @@
   </ItemGroup>
 
   <ItemGroup>
-	  <Content Condition="'$(Configuration)' == 'Debug'" Include="..\bin\x64\Debug\TrayIcon\TrayIcon.dll" CopyToOutputDirectory="Always" Visible="false" />
-	  <Content Condition="'$(Configuration)' == 'Release'" Include="..\bin\x64\Release\TrayIcon\TrayIcon.dll" CopyToOutputDirectory="Always" Visible="false" />
+	  <Content Condition="'$(Configuration)' == 'Debug'" Include="..\bin\x64\Debug\SimpleTrayIcon\SimpleTrayIcon.dll" CopyToOutputDirectory="Always" Visible="false" />
+	  <Content Condition="'$(Configuration)' == 'Release'" Include="..\bin\x64\Release\SimpleTrayIcon\SimpleTrayIcon.dll" CopyToOutputDirectory="Always" Visible="false" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TrayIconProjections\TrayIconProjections.csproj" />
+    <ProjectReference Include="..\SimpleTrayIconProjections\SimpleTrayIconProjections.csproj" />
   </ItemGroup>
 
 </Project>

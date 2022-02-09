@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
 	  <ImplicitUsings>disable</ImplicitUsings>
-    <RootNamespace>TrayIcon</RootNamespace>
+    <RootNamespace>SimpleTrayIcon</RootNamespace>
 	  <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
