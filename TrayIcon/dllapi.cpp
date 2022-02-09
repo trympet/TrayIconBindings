@@ -58,7 +58,7 @@ TRAYAPI TrayMenuClose(_In_ MyTrayMenu* pInstance) noexcept
 	return S_OK;
 }
 
-TRAYAPI TrayMenuAdd(_In_ MyTrayMenu* pInstance, _In_ TrayMenuItem* pTrayMenuItem) noexcept
+TRAYAPI TrayMenuAdd(_In_ MyTrayMenu* pInstance, _In_ TrayMenuItemBase* pTrayMenuItem) noexcept
 {
 	GUARD_NOT_NULL(pInstance);
 	GUARD_NOT_NULL(pTrayMenuItem);
@@ -66,7 +66,7 @@ TRAYAPI TrayMenuAdd(_In_ MyTrayMenu* pInstance, _In_ TrayMenuItem* pTrayMenuItem
 	return S_OK;
 }
 
-TRAYAPI TrayMenuRemove(_In_ MyTrayMenu* pInstance, _In_ TrayMenuItem* pTrayMenuItem) noexcept
+TRAYAPI TrayMenuRemove(_In_ MyTrayMenu* pInstance, _In_ TrayMenuItemBase* pTrayMenuItem) noexcept
 {
 	GUARD_NOT_NULL(pInstance);
 	GUARD_NOT_NULL(pTrayMenuItem);
@@ -117,6 +117,37 @@ TRAYAPI TrayMenuItemIsChecked(_In_ TrayMenuItem* pInstance, const BOOL value) no
 {
 	GUARD_NOT_NULL(pInstance);
 	pInstance->IsChecked(value);
+	return S_OK;
+}
+
+TRAYAPI TrayMenuSeparatorCreate(_Outptr_result_nullonfailure_ TrayMenuSeparator** pInstance) noexcept
+{
+	GUARD_NOT_NULL(pInstance);
+	*pInstance = NULL;
+
+	API_TRY
+		* pInstance = new TrayMenuSeparator();
+	API_CATCH(
+		if (pInstance) {
+			if (*pInstance) {
+				delete* pInstance;
+			}
+
+			*pInstance = NULL;
+		}
+	)
+}
+
+TRAYAPI TrayMenuSeparatorRelease(const _Inout_ TrayMenuSeparator** pInstance) noexcept
+{
+	if (pInstance) {
+		if (*pInstance) {
+			delete* pInstance;
+		}
+
+		*pInstance = NULL;
+	}
+
 	return S_OK;
 }
 

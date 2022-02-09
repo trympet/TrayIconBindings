@@ -47,6 +47,7 @@ namespace TrayIcon.Demo
                     var newItem = new TrayMenuItem { Content = $"Item{++itemNumber}" };
                     newItem.Click += OnClicked;
                     menu.Items.Add(newItem);
+                    menu.Items.Add(new TrayMenuSeparator());
                 }
             }
 

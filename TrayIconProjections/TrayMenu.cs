@@ -4,19 +4,19 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
-using static TrayIcon.NativeMethods2;
+using static TrayIcon.NativeMethods;
 
 namespace TrayIcon
 {
     public partial class TrayMenu : IDisposable
     {
-        private readonly Action<TrayMenuItem> _onAddedDelegate;
-        private readonly Action<TrayMenuItem> _onRemovedDelegate;
+        private readonly Action<TrayMenuItemBase> _onAddedDelegate;
+        private readonly Action<TrayMenuItemBase> _onRemovedDelegate;
         private readonly bool _ownsItems;
         private Icon? _icon;
         private IntPtr _hInstance;
-        private ICollection<TrayMenuItem> _items = new ObservableCollection<TrayMenuItem>();
-        private ItemSubscription<TrayMenuItem>? _itemSubscription;
+        private ICollection<TrayMenuItemBase> _items = new ObservableCollection<TrayMenuItemBase>();
+        private ItemSubscription<TrayMenuItemBase>? _itemSubscription;
 
         public TrayMenu(Icon icon, string tip, bool ownsItems = true)
         {
@@ -39,7 +39,7 @@ namespace TrayIcon
 #endif
         private bool DisposedValue { get; set; }
 
-        public ICollection<TrayMenuItem> Items
+        public ICollection<TrayMenuItemBase> Items
         {
             get => _items;
             set
@@ -81,7 +81,7 @@ namespace TrayIcon
                     {
                         foreach (var item in _items)
                         {
-                            item.Dispose();
+                            (item as IDisposable)?.Dispose();
                         }
                     }
 
@@ -118,17 +118,17 @@ namespace TrayIcon
             }
         }
 
-        protected virtual void OnItemAdded(TrayMenuItem item)
+        protected virtual void OnItemAdded(TrayMenuItemBase item)
         {
             TrayMenuAdd(_hInstance, item.HInstance);
         }
 
-        protected virtual void OnItemRemoved(TrayMenuItem item)
+        protected virtual void OnItemRemoved(TrayMenuItemBase item)
         {
             TrayMenuRemove(_hInstance, item.HInstance);
             if (_ownsItems)
             {
-                item.Dispose();
+                (item as IDisposable)?.Dispose();
             }
         }
     }

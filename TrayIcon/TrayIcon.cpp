@@ -72,7 +72,7 @@ TrayIcon::~TrayIcon()
 	delete m_trayMenuPopup;
 }
 
-void TrayIcon::AddItem(TrayMenuItem& item) noexcept
+void TrayIcon::AddItem(TrayMenuItemBase& item) noexcept
 {
 	if (m_trayMenuPopup != NULL) {
 		m_trayMenuPopup->Attach(item);
@@ -81,7 +81,7 @@ void TrayIcon::AddItem(TrayMenuItem& item) noexcept
 	m_items.push_back(item);
 }
 
-void TrayIcon::RemoveItem(TrayMenuItem& item)
+void TrayIcon::RemoveItem(TrayMenuItemBase& item)
 {
 	if (m_trayMenuPopup != NULL) {
 		item.Detach();

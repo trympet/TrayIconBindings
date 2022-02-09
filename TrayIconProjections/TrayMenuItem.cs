@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Windows.Input;
-using static TrayIcon.NativeMethods2;
+using static TrayIcon.NativeMethods;
 
 namespace TrayIcon
 {
@@ -13,18 +13,17 @@ namespace TrayIcon
         public uint CommandId { get; set; }
     }
 
-    public class TrayMenuItem : IDisposable
+    public class TrayMenuItem : TrayMenuItemBase, IDisposable
     {
         private readonly OnClicked _onClickedDelegate; // store to keep delegate pinned.
         private bool _disposedValue;
         private string _content = string.Empty;
         private bool _isChecked;
-        private IntPtr _hInstance;
 
         public TrayMenuItem()
         {
             _onClickedDelegate = OnClick;
-            _hInstance = TrayMenuItemCreate(_onClickedDelegate);
+            HInstanceRef = TrayMenuItemCreate(_onClickedDelegate);
         }
 
         ~TrayMenuItem()
@@ -64,8 +63,6 @@ namespace TrayIcon
             }
         }
 
-        internal IntPtr HInstance => _hInstance;
-
         public void Dispose()
         {
             Dispose(disposing: true);
@@ -81,8 +78,12 @@ namespace TrayIcon
                     _ = disposing;
                 }
 
-                TrayMenuItemRelease(ref _hInstance);
-                _hInstance = IntPtr.Zero;
+                if (HInstanceRef != IntPtr.Zero)
+                {
+                    TrayMenuItemRelease(ref HInstanceRef);
+                    HInstanceRef = IntPtr.Zero;
+                }
+
                 _disposedValue = true;
             }
         }

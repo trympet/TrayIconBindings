@@ -30,7 +30,7 @@ void MyTrayMenu::Show() noexcept
 	}
 }
 
-void MyTrayMenu::AddItem(TrayMenuItem& pTrayMenuItem) noexcept
+void MyTrayMenu::AddItem(TrayMenuItemBase& pTrayMenuItem) noexcept
 {
 	if (m_trayIcon) {
 		m_trayIcon->AddItem(pTrayMenuItem);
@@ -41,7 +41,7 @@ void MyTrayMenu::AddItem(TrayMenuItem& pTrayMenuItem) noexcept
 	}
 }
 
-void MyTrayMenu::RemoveItem(TrayMenuItem& pTrayMenuItem) noexcept
+void MyTrayMenu::RemoveItem(TrayMenuItemBase& pTrayMenuItem) noexcept
 {
 	if (m_trayIcon) {
 		m_trayIcon->RemoveItem(pTrayMenuItem);
@@ -60,7 +60,7 @@ void MyTrayMenu::Close()
 	}
 }
 
-BOOL MyTrayMenu::RemoveItem(std::queue<std::reference_wrapper<TrayMenuItem>>& pQueue, const TrayMenuItem& pItem) {
+BOOL MyTrayMenu::RemoveItem(std::queue<std::reference_wrapper<TrayMenuItemBase>>& pQueue, const TrayMenuItemBase& pItem) {
 	const auto max = pQueue.size();
 	int i = 0;
 	while (!pQueue.empty()) {

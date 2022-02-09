@@ -4,45 +4,17 @@
 TrayMenuItem::TrayMenuItem(const TrayMenuItemClicked onClicked) noexcept
 {
 	m_onClicked = onClicked;
-	m_commandId = InterlockedIncrement(&s_nextCommandId);
 }
 
-TrayMenuItem::~TrayMenuItem()
+LPCWSTR TrayMenuItem::Content() const noexcept
 {
-	Detach();
+	return m_content;
 }
 
 void TrayMenuItem::Content(const LPWSTR& value) noexcept
 {
 	wcscpy_s(m_content, value);
 	RefreshIfAttached();
-}
-
-void TrayMenuItem::Attach(const HWND hWnd, const HMENU hMenu) noexcept
-{
-	if (hWnd == NULL) {
-		return;
-	}
-
-	if (hMenu == NULL) {
-		return;
-	}
-
-	Detach();
-	AppendMenu(hMenu, GetFlags(), m_commandId, m_content);
-
-	m_hWnd = hWnd;
-	m_hMenu = hMenu;
-}
-
-void TrayMenuItem::Detach() noexcept
-{
-	if (m_hMenu) {
-		DeleteMenu(m_hMenu, m_commandId, MF_BYCOMMAND);
-		m_hMenu = NULL;
-	}
-
-	m_hWnd = NULL;
 }
 
 void TrayMenuItem::IsChecked(const BOOL value) noexcept
@@ -53,12 +25,12 @@ void TrayMenuItem::IsChecked(const BOOL value) noexcept
 
 void TrayMenuItem::OnCommand(const WPARAM commandId) const noexcept
 {
-	if (commandId == m_commandId) {
-		m_onClicked(this, m_commandId);
+	if (commandId == GetId()) {
+		m_onClicked(this, GetId());
 	}
 }
 
-constexpr UINT TrayMenuItem::GetFlags() const noexcept
+UINT TrayMenuItem::GetFlags() const noexcept
 {
 	UINT result = MF_STRING;
 	if (m_isChecked) {
@@ -66,12 +38,3 @@ constexpr UINT TrayMenuItem::GetFlags() const noexcept
 	}
 	return result;
 }
-
-void TrayMenuItem::RefreshIfAttached() {
-	if (m_hMenu) {
-		//Attach(m_hWnd, m_hMenu);
-		DrawMenuBar(m_hWnd);
-	}
-}
-
-UINT TrayMenuItem::s_nextCommandId{ BASE_COMMAND_ID };

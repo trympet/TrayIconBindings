@@ -180,7 +180,9 @@
     <ClInclude Include="TrayIcon.h" />
     <ClInclude Include="TrayIconManager.h" />
     <ClInclude Include="TrayMenuItem.h" />
+    <ClInclude Include="TrayMenuItemBase.h" />
     <ClInclude Include="TrayMenuPopup.h" />
+    <ClInclude Include="TrayMenuSeparator.h" />
     <ClInclude Include="Win32Exception.h" />
   </ItemGroup>
   <ItemGroup>
@@ -196,7 +198,9 @@
     <ClCompile Include="TrayIcon.cpp" />
     <ClCompile Include="TrayIconManager.cpp" />
     <ClCompile Include="TrayMenuItem.cpp" />
+    <ClCompile Include="TrayMenuItemBase.cpp" />
     <ClCompile Include="TrayMenuPopup.cpp" />
+    <ClCompile Include="TrayMenuSeparator.cpp" />
     <ClCompile Include="Win32Exception.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

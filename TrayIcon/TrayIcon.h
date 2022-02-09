@@ -12,12 +12,12 @@ private:
 	TrayIconDataWrapper& m_trayIconData = TrayIconManager::Create();
 	TrayMenuPopup* m_trayMenuPopup = NULL;
 	HWND m_trayIconHwnd = NULL;
-	std::vector<std::reference_wrapper<TrayMenuItem>> m_items;
+	std::vector<std::reference_wrapper<TrayMenuItemBase>> m_items;
 public:
 	TrayIcon(const HICON hIcon, const LPWSTR tip);
 	~TrayIcon();
-	void AddItem(TrayMenuItem& pTrayMenuItem) noexcept;
-	void RemoveItem(TrayMenuItem& pTrayMenuItem);
+	void AddItem(TrayMenuItemBase& pTrayMenuItem) noexcept;
+	void RemoveItem(TrayMenuItemBase& pTrayMenuItem);
 private:
 	static LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) noexcept;
 	inline static TrayIcon* GetInstance(const HWND hWnd);

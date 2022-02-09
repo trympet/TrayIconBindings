@@ -3,7 +3,7 @@
 
 
 
-TrayMenuPopup::TrayMenuPopup(const HWND hWnd, const std::vector<std::reference_wrapper<TrayMenuItem>>& items)
+TrayMenuPopup::TrayMenuPopup(const HWND hWnd, const std::vector<std::reference_wrapper<TrayMenuItemBase>>& items)
 {
 	m_hWnd = hWnd;
 	auto menu = m_hMenu = CreateMenu();
@@ -38,7 +38,7 @@ TrayMenuPopup::~TrayMenuPopup()
 	}
 }
 
-void TrayMenuPopup::Attach(TrayMenuItem& item) noexcept
+void TrayMenuPopup::Attach(TrayMenuItemBase& item) noexcept
 {
 	item.Attach(m_hWnd, m_hSubMenu);
 	m_items.push_back(item);
@@ -50,4 +50,9 @@ void TrayMenuPopup::Track() const noexcept
     GetCursorPos(&mouse_pointer);
     SetForegroundWindow(m_hWnd); // Needed for the context menu to disappear.
     TrackPopupMenu(m_hSubMenu, TPM_CENTERALIGN | TPM_BOTTOMALIGN, mouse_pointer.x, mouse_pointer.y, 0, m_hWnd, nullptr);
+}
+
+UINT TrayMenuPopup::GetFlags() const noexcept
+{
+	return MF_SEPARATOR;
 }
