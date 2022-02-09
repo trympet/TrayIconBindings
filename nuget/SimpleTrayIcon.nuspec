@@ -7,8 +7,8 @@
         <authors>Trym Lund Flogard</authors>
         <owners>Trym Lund Flogard</owners>
         <description>An easy-to-use Tray Icon API for .NET</description>
-        <projectUrl>https://github.com/trympet/SimpleTrayIconBindings</projectUrl>
-		<repository type="git" url="https://github.com/trympet/SimpleTrayIconBindings" commit="$commit$" />
+        <projectUrl>https://github.com/trympet/TrayIconBindings</projectUrl>
+		<repository type="git" url="https://github.com/trympet/TrayIconBindings" commit="$commit$" />
         <license type="expression">MIT</license>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <copyright>© Trym Lund Flogard. All rights reserved.</copyright>
