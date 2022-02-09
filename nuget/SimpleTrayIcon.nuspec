@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata minClientVersion="2.8.6">
-        <id>SimpleSimpleTrayIcon</id>
+        <id>SimpleTrayIcon</id>
         <version>0.0.0-SpecifyVersionOnCommandline</version>
-        <title>SimpleSimpleTrayIcon</title>
+        <title>SimpleTrayIcon</title>
         <authors>Trym Lund Flogard</authors>
         <owners>Trym Lund Flogard</owners>
         <description>An easy-to-use Tray Icon API for .NET</description>
