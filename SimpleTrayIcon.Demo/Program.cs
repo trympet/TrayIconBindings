@@ -2,7 +2,7 @@
 using System.Drawing;
 
 #pragma warning disable CA1416 // Validate platform compatibility
-namespace TrayIcon.Demo
+namespace SimpleTrayIcon.Demo
 {
     public static class Program
     {
@@ -33,7 +33,7 @@ namespace TrayIcon.Demo
 
         private static void ManagedDemo()
         {
-            var icon = new Icon(typeof(TrayIconApi), "TrayIcon.Demo.tray-icon.ico");
+            var icon = new Icon(typeof(SimpleTrayIconApi), "SimpleTrayIcon.Demo.tray-icon.ico");
             var menu = new TrayMenu(icon, "Tooltip", true);
             var item1 = new TrayMenuItem { Content = "Item1" };
 
@@ -59,40 +59,40 @@ namespace TrayIcon.Demo
 
         private static void PInvokeDemo()
         {
-            var icon = new Icon(typeof(TrayIconApi), "TrayIcon.Demo.tray-icon.ico");
+            var icon = new Icon(typeof(SimpleTrayIconApi), "SimpleTrayIcon.Demo.tray-icon.ico");
             var hIcon = icon.Handle;
 
-            TrayIconApi.TrayMenuCreate(hIcon, "tip", out var hMenu);
+            SimpleTrayIconApi.TrayMenuCreate(hIcon, "tip", out var hMenu);
 
-            TrayIconApi.TrayMenuItemCreate((s, e) =>
+            SimpleTrayIconApi.TrayMenuItemCreate((s, e) =>
             {
                 Console.WriteLine("Clicked1");
             }, out var hItem1);
 
-            TrayIconApi.TrayMenuItemCreate((s, e) =>
+            SimpleTrayIconApi.TrayMenuItemCreate((s, e) =>
             {
                 Console.WriteLine("Clicked2");
             }, out var hItem2);
 
             var item3Checked = false;
             string item3Content = "a";
-            TrayIconApi.TrayMenuItemCreate((s, e) =>
+            SimpleTrayIconApi.TrayMenuItemCreate((s, e) =>
             {
-                TrayIconApi.TrayMenuItemIsChecked(s, item3Checked = !item3Checked);
+                SimpleTrayIconApi.TrayMenuItemIsChecked(s, item3Checked = !item3Checked);
                 item3Content += (char)(item3Content.Last() + 1);
-                TrayIconApi.TrayMenuItemContent(s, item3Content);
+                SimpleTrayIconApi.TrayMenuItemContent(s, item3Content);
                 Console.WriteLine("Clicked3");
             }, out var hItem3);
 
-            TrayIconApi.TrayMenuItemContent(hItem1, "item1");
-            TrayIconApi.TrayMenuItemContent(hItem2, "item2");
-            TrayIconApi.TrayMenuItemContent(hItem3, item3Content);
+            SimpleTrayIconApi.TrayMenuItemContent(hItem1, "item1");
+            SimpleTrayIconApi.TrayMenuItemContent(hItem2, "item2");
+            SimpleTrayIconApi.TrayMenuItemContent(hItem3, item3Content);
 
-            TrayIconApi.TrayMenuAdd(hMenu, hItem1);
-            TrayIconApi.TrayMenuAdd(hMenu, hItem2);
-            TrayIconApi.TrayMenuAdd(hMenu, hItem3);
+            SimpleTrayIconApi.TrayMenuAdd(hMenu, hItem1);
+            SimpleTrayIconApi.TrayMenuAdd(hMenu, hItem2);
+            SimpleTrayIconApi.TrayMenuAdd(hMenu, hItem3);
 
-            TrayIconApi.TrayMenuShow(hMenu);
+            SimpleTrayIconApi.TrayMenuShow(hMenu);
 
             NativeMethods.RunLoop();
         }

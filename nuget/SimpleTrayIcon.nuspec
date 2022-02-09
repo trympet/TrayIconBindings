@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata minClientVersion="2.8.6">
+        <id>SimpleSimpleTrayIcon</id>
+        <version>0.0.0-SpecifyVersionOnCommandline</version>
+        <title>SimpleSimpleTrayIcon</title>
+        <authors>Trym Lund Flogard</authors>
+        <owners>Trym Lund Flogard</owners>
+        <description>An easy-to-use Tray Icon API for .NET</description>
+        <projectUrl>https://github.com/trympet/SimpleTrayIconBindings</projectUrl>
+		<repository type="git" url="https://github.com/trympet/SimpleTrayIconBindings" commit="$commit$" />
+        <license type="expression">MIT</license>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <copyright>© Trym Lund Flogard. All rights reserved.</copyright>
+        <tags>tray icon win32 systray notify mvvm .net 6</tags>
+
+        <dependencies>
+            <group targetFramework="net6.0">
+                <dependency id="System.Drawing.Common" version="6.0.0" />
+            </group>
+        </dependencies>
+    </metadata>
+
+    <files>
+        <file target="build\net6.0\SimpleTrayIcon.managed.targets"  src="nuget\SimpleTrayIcon.managed.targets" />
+        <file target="build\net472\SimpleTrayIcon.managed.targets"  src="nuget\SimpleTrayIcon.managed.targets" />
+  
+        <file target="lib\net6.0\SimpleTrayIconProjections.dll"     src="bin\AnyCPU\Release\SimpleTrayIconProjections\net6.0\ref\SimpleTrayIconProjections.dll" />
+        <file target="lib\net6.0\SimpleTrayIconProjections.pdb"     src="bin\AnyCPU\Release\SimpleTrayIconProjections\net6.0\SimpleTrayIconProjections.pdb" />
+        <file target="lib\net472\SimpleTrayIconProjections.dll"     src="bin\AnyCPU\Release\SimpleTrayIconProjections\net472\SimpleTrayIconProjections.dll" />
+        <file target="lib\net472\SimpleTrayIconProjections.pdb"     src="bin\AnyCPU\Release\SimpleTrayIconProjections\net472\SimpleTrayIconProjections.pdb" />
+  
+        <file target="runtimes\win10-x64\native\SimpleTrayIcon.dll" src="bin\x64\Release\SimpleTrayIcon\SimpleTrayIcon.dll" />
+        <file target="runtimes\win10-x64\native\SimpleTrayIcon.pdb" src="bin\x64\Release\SimpleTrayIcon\SimpleTrayIcon.pdb" />
+        <file target="runtimes\win10-x86\native\SimpleTrayIcon.dll" src="bin\x86\Release\SimpleTrayIcon\SimpleTrayIcon.dll" />
+        <file target="runtimes\win10-x86\native\SimpleTrayIcon.pdb" src="bin\x86\Release\SimpleTrayIcon\SimpleTrayIcon.pdb" />
+
+    </files>
+</package>

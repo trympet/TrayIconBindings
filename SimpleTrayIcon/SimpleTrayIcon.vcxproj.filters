@@ -24,7 +24,7 @@
     <ClInclude Include="MyTrayMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TrayIcon.h">
+    <ClInclude Include="SimpleTrayIcon.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TrayMenuItem.h">
@@ -39,7 +39,7 @@
     <ClInclude Include="Win32Exception.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TrayIconManager.h">
+    <ClInclude Include="SimpleTrayIconManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="TrayMenuItemBase.h">
@@ -59,7 +59,7 @@
     <ClCompile Include="MyTrayMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TrayIcon.cpp">
+    <ClCompile Include="SimpleTrayIcon.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TrayMenuItem.cpp">
@@ -74,7 +74,7 @@
     <ClCompile Include="Win32Exception.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TrayIconManager.cpp">
+    <ClCompile Include="SimpleTrayIconManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TrayMenuItemBase.cpp">

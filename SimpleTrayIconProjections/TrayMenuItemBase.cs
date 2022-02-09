@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TrayIcon
+namespace SimpleTrayIcon
 {
     public abstract class TrayMenuItemBase
     {

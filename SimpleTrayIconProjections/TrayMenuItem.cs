@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Windows.Input;
-using static TrayIcon.NativeMethods;
+using static SimpleTrayIcon.NativeMethods;
 
-namespace TrayIcon
+namespace SimpleTrayIcon
 {
     public class TrayMenuItemClickedEventArgs : EventArgs
     {

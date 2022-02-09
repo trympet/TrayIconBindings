@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using static TrayIcon.NativeMethods;
+using static SimpleTrayIcon.NativeMethods;
 
-namespace TrayIcon
+namespace SimpleTrayIcon
 {
     public class TrayMenuSeparator : TrayMenuItemBase, IDisposable
     {
