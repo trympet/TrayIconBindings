@@ -3,7 +3,7 @@
 #include "TrayMenuSeparator.h"
 #define TRAYAPI EXTERN_C __declspec(dllexport) HRESULT WINAPI
 
-TRAYAPI TrayMenuCreate(const HICON hIcon, const _In_ LPWSTR tip, _Outptr_result_nullonfailure_ MyTrayMenu** pInstance) noexcept;
+TRAYAPI TrayMenuCreate(const HICON hIcon, const _In_ LPWSTR tip, const _In_ ClickHandler onDoubleClick, _Outptr_result_nullonfailure_ MyTrayMenu** pInstance) noexcept;
 TRAYAPI TrayMenuRelease(const _Inout_ MyTrayMenu** pInstance) noexcept;
 TRAYAPI TrayMenuShow(_In_ MyTrayMenu* pInstance) noexcept;
 TRAYAPI TrayMenuClose(_In_ MyTrayMenu* pInstance) noexcept;
@@ -11,7 +11,7 @@ TRAYAPI TrayMenuAdd(_In_ MyTrayMenu* pInstance, _In_ TrayMenuItemBase* pTrayMenu
 TRAYAPI TrayMenuRemove(_In_ MyTrayMenu* pInstance, _In_ TrayMenuItemBase* pTrayMenuItem) noexcept;
 TRAYAPI TrayMenuSetIcon(_In_ MyTrayMenu* pInstance, const HICON hIcon) noexcept;
 
-TRAYAPI TrayMenuItemCreate(const _In_ TrayMenuItemClicked onClicked, _Outptr_result_nullonfailure_ TrayMenuItem** pInstance) noexcept;
+TRAYAPI TrayMenuItemCreate(const _In_ TrayMenuItemClickHandler onClick, _Outptr_result_nullonfailure_ TrayMenuItem** pInstance) noexcept;
 TRAYAPI TrayMenuItemRelease(const _Inout_ TrayMenuItem** pInstance) noexcept;
 TRAYAPI TrayMenuItemContent(_In_ TrayMenuItem* pInstance, const _In_ LPWSTR value) noexcept;
 TRAYAPI TrayMenuItemIsChecked(_In_ TrayMenuItem* pInstance, const BOOL value) noexcept;

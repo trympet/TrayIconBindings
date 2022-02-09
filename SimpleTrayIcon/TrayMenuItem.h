@@ -5,17 +5,18 @@
 
 class TrayMenuItem;
 
-typedef void(CALLBACK* TrayMenuItemClicked)(const TrayMenuItem*, UINT);
+typedef void(CALLBACK* ClickHandler)();
+typedef void(CALLBACK* TrayMenuItemClickHandler)(const TrayMenuItem*, UINT);
 
 class TrayMenuItem : public TrayMenuItemBase
 {
 private:
-	TrayMenuItemClicked m_onClicked;
+	TrayMenuItemClickHandler m_onClicked;
 	wchar_t m_content[128]{};
 	BOOL m_isChecked = false;
 
 public:
-	TrayMenuItem(const TrayMenuItemClicked onClicked) noexcept;
+	TrayMenuItem(const TrayMenuItemClickHandler onClicked) noexcept;
 	LPCWSTR Content() const noexcept;
 	void Content(const LPWSTR& value) noexcept;
 	void IsChecked(const BOOL value) noexcept;

@@ -11,8 +11,9 @@ namespace SimpleTrayIcon
     {
         private const string SimpleTrayIcon = "SimpleTrayIcon.dll";
 
+        public delegate void ClickHandler();
         [DllImport(SimpleTrayIcon, ExactSpelling = true, CharSet = CharSet.Unicode, PreserveSig = false)]
-        public static extern IntPtr TrayMenuCreate(IntPtr hIcon, [MarshalAs(UnmanagedType.LPWStr)] string tip);
+        public static extern IntPtr TrayMenuCreate(IntPtr hIcon, [MarshalAs(UnmanagedType.LPWStr)] string tip, ClickHandler onDoubleClick);
 
         [DllImport(SimpleTrayIcon, ExactSpelling = true, CharSet = CharSet.Unicode, PreserveSig = false)]
         public static extern void TrayMenuRelease(ref IntPtr pInstance);
@@ -33,10 +34,10 @@ namespace SimpleTrayIcon
         public static extern void TrayMenuSetIcon(IntPtr pInstance, IntPtr hIcon);
 
 
-        public delegate void OnClicked(IntPtr sender, uint id);
+        public delegate void TrayMenuItemClickHandler(IntPtr sender, uint id);
 
         [DllImport(SimpleTrayIcon, ExactSpelling = true, CharSet = CharSet.Unicode, PreserveSig = false)]
-        public static extern IntPtr TrayMenuItemCreate(OnClicked onClicked);
+        public static extern IntPtr TrayMenuItemCreate(TrayMenuItemClickHandler onClick);
 
         [DllImport(SimpleTrayIcon, ExactSpelling = true, CharSet = CharSet.Unicode, PreserveSig = false)]
         public static extern void TrayMenuItemRelease(ref IntPtr pInstance);

@@ -56,6 +56,8 @@ namespace SimpleTrayIcon.Demo
             item1.Click += OnClicked;
             menu.Items.Add(item1);
 
+            menu.DoubleClick += (_, _) => Console.WriteLine("Double click.");
+
             NativeMethods.RunLoop();
         }
 

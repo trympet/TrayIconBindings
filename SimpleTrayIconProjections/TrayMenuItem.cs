@@ -15,7 +15,7 @@ namespace SimpleTrayIcon
 
     public class TrayMenuItem : TrayMenuItemBase, IDisposable
     {
-        private readonly OnClicked _onClickedDelegate; // store to keep delegate pinned.
+        private readonly TrayMenuItemClickHandler _onClickedDelegate; // store to keep delegate pinned.
         private bool _disposedValue;
         private string _content = string.Empty;
         private bool _isChecked;

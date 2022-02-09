@@ -11,12 +11,13 @@ private:
 	WCHAR m_tip[128];
 	std::queue<std::reference_wrapper<TrayMenuItemBase>> m_addedItems;
 	std::queue<std::reference_wrapper<TrayMenuItemBase>> m_items;
+	ClickHandler m_onDoubleClick;
 
 	// Nullable
 	TrayIcon* m_trayIcon = NULL;
 
 public:
-	MyTrayMenu(const HICON hIcon, const LPWSTR tip) noexcept;
+	MyTrayMenu(const HICON hIcon, const LPWSTR tip, const ClickHandler onDoubleClick) noexcept;
 	~MyTrayMenu() noexcept;
 	void Show() noexcept;
 	void AddItem(TrayMenuItemBase& pTrayMenuItem) noexcept;
