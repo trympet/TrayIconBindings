@@ -19,8 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-	  <Content Condition="'$(Configuration)' == 'Debug'" Include="..\x64\Debug\TrayIcon.dll" CopyToOutputDirectory="Always" Visible="false" />
-	  <Content Condition="'$(Configuration)' == 'Release'" Include="..\x64\Release\TrayIcon.dll" CopyToOutputDirectory="Always" Visible="false" />
+	  <Content Condition="'$(Configuration)' == 'Debug'" Include="..\bin\x64\Debug\TrayIcon\TrayIcon.dll" CopyToOutputDirectory="Always" Visible="false" />
+	  <Content Condition="'$(Configuration)' == 'Release'" Include="..\bin\x64\Release\TrayIcon\TrayIcon.dll" CopyToOutputDirectory="Always" Visible="false" />
   </ItemGroup>
 
   <ItemGroup>
