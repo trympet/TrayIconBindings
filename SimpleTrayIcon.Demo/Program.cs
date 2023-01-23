@@ -69,10 +69,10 @@ namespace SimpleTrayIcon.Demo
 
         private static void PInvokeDemo()
         {
-            var icon = new Icon(typeof(SimpleTrayIconApi), "SimpleTrayIcon.Demo.tray-icon.ico");
+            var icon = new Icon(typeof(SimpleTrayIconApi), "SimpleTrayIcon.Demo.tray-icon-1.ico");
             var hIcon = icon.Handle;
-
-            SimpleTrayIconApi.TrayMenuCreate(hIcon, "tip", out var hMenu);
+            DoubleClickHandler onDoubleClick = _ => Console.WriteLine("Double click!");
+            SimpleTrayIconApi.TrayMenuCreate(hIcon, "tip", onDoubleClick, out var hMenu);
 
             SimpleTrayIconApi.TrayMenuItemCreate((s, e) =>
             {

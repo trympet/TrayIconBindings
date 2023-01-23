@@ -1,10 +1,11 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using System.Runtime.InteropServices;
 
+public delegate void DoubleClickHandler(IntPtr obj);
 public class SimpleTrayIconApi
 {
     [DllImport("SimpleTrayIcon.dll", ExactSpelling = true, CharSet = CharSet.Unicode)]
-    public static extern int TrayMenuCreate(IntPtr hIcon, [MarshalAs(UnmanagedType.LPWStr)] string tip, out IntPtr pInstance);
+    public static extern int TrayMenuCreate(IntPtr hIcon, [MarshalAs(UnmanagedType.LPWStr)] string tip, DoubleClickHandler onDoubleClick, out IntPtr pInstance);
 
     [DllImport("SimpleTrayIcon.dll", ExactSpelling = true, CharSet = CharSet.Unicode)]
     public static extern int TrayMenuRelease(ref IntPtr pInstance);
