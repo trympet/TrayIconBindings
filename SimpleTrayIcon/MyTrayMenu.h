@@ -18,7 +18,7 @@ private:
 	std::optional<std::unique_ptr<TrayIcon>> m_trayIcon;
 
 public:
-	MyTrayMenu(const HICON hIcon, const LPWSTR tip, const TrayMenuClickHandler onDoubleClick) noexcept;
+	MyTrayMenu(const HICON hIcon, const _In_ WCHAR tip[128], const TrayMenuClickHandler onDoubleClick) noexcept;
 	void Show() noexcept;
 	void AddItem(TrayMenuItemBase& pTrayMenuItem) noexcept;
 	void RemoveItem(TrayMenuItemBase& pTrayMenuItem) noexcept;

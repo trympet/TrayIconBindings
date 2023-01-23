@@ -7,7 +7,7 @@
 
 using namespace std;
 
-MyTrayMenu::MyTrayMenu(const HICON hIcon, const LPWSTR tip, const TrayMenuClickHandler onDoubleClick) noexcept
+MyTrayMenu::MyTrayMenu(const HICON hIcon, const _In_ WCHAR tip[128], const TrayMenuClickHandler onDoubleClick) noexcept
 {
 	m_hIcon = hIcon;
 	wcscpy_s(m_tip, tip);

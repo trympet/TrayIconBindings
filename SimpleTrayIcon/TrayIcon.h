@@ -11,6 +11,7 @@ private:
 	HWND m_trayIconHwnd = NULL;
 	std::vector<std::reference_wrapper<TrayMenuItemBase>> m_items;
 	std::function<void()> m_onDoubleClick;
+	HICON m_hIcon;
 public:
 	TrayIcon(const HICON hIcon, const LPWSTR tip, const std::function<void()> onDoubleClick);
 	~TrayIcon();

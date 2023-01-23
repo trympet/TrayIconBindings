@@ -11,13 +11,13 @@ class TrayMenuItem : public TrayMenuItemBase
 {
 private:
 	TrayMenuItemClickHandler m_onClicked;
-	wchar_t m_content[128]{};
+	std::wstring m_content;
 	BOOL m_isChecked = false;
 
 public:
 	TrayMenuItem(const TrayMenuItemClickHandler onClicked) noexcept;
 	LPCWSTR Content() const noexcept;
-	void Content(const LPWSTR& value) noexcept;
+	void Content(_In_ LPCWSTR value) noexcept;
 	void IsChecked(const BOOL value) noexcept;
 	void OnCommand(const WPARAM commandId) const noexcept;
 

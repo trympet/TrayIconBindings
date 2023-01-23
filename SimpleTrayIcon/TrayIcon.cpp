@@ -3,14 +3,15 @@
 
 #define WM_TRAYNOTIFY L"WM_IconNotify"
 #define WM_TRAYMOUSEMESSAGE (WM_USER + 420)
+static const UINT WM_TASKBARCREATED = RegisterWindowMessageW(L"TaskbarCreated");
+static const wchar_t TrayIconWndClass[] = L"TrayIconWnd";
 
 EXTERN_C static IMAGE_DOS_HEADER __ImageBase;
 
-static const wchar_t TrayIconWndClass[] = L"TrayIconWnd";
 static volatile UINT s_nextId = 0;
 
 TrayIcon::TrayIcon(const HICON hIcon, const LPWSTR tip, const std::function<void()> onDoubleClick)
-	: m_trayIconData(TrayIconManager::Create())
+	: m_trayIconData(TrayIconManager::Create()), m_hIcon(CopyIcon(hIcon))
 {
 	m_onDoubleClick = onDoubleClick;
 
@@ -46,7 +47,7 @@ TrayIcon::TrayIcon(const HICON hIcon, const LPWSTR tip, const std::function<void
 
 	NOTIFYICONDATA trayIconData{};
 	trayIconData.cbSize = sizeof(NOTIFYICONDATA);
-	trayIconData.hIcon = hIcon;
+	trayIconData.hIcon = m_hIcon;
 	trayIconData.hWnd = hWnd;
 	trayIconData.uID = InterlockedIncrement(&s_nextId);
 	trayIconData.uCallbackMessage = WM_TRAYMOUSEMESSAGE;
@@ -65,7 +66,9 @@ TrayIcon::~TrayIcon()
 {
 	if (m_trayIconHwnd) {
 		SendMessageTimeout(m_trayIconHwnd, WM_CLOSE, 0, 0, SMTO_ABORTIFHUNG | SMTO_BLOCK, 3999, NULL);
+		DestroyWindow(m_trayIconHwnd);
 	}
+	DestroyIcon(m_hIcon);
 }
 
 void TrayIcon::AddItem(TrayMenuItemBase& item) noexcept
@@ -98,12 +101,17 @@ void TrayIcon::RemoveItem(TrayMenuItemBase& item)
 
 void TrayIcon::SetIcon(const HICON hIcon) noexcept
 {
+	if (hIcon != m_hIcon) {
+		DestroyIcon(m_hIcon);
+		m_hIcon = CopyIcon(hIcon);
+	}
+
 	if (!m_trayIconData->has_value()) {
 		return;
 	}
 
 	auto& trayIconData = m_trayIconData->value();
-	trayIconData.hIcon = hIcon;
+	trayIconData.hIcon = m_hIcon;
 
 	Shell_NotifyIcon(NIM_MODIFY, &trayIconData);
 }
@@ -173,6 +181,9 @@ LRESULT TrayIcon::TrayIconWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM
 		}
 		break;
 	default:
+		if (message == WM_TASKBARCREATED && m_trayIconData->has_value()) {
+			Shell_NotifyIcon(NIM_ADD, &m_trayIconData->value());
+		}
 		break;
 	}
 

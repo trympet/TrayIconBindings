@@ -8,12 +8,12 @@ TrayMenuItem::TrayMenuItem(const TrayMenuItemClickHandler onClicked) noexcept
 
 LPCWSTR TrayMenuItem::Content() const noexcept
 {
-	return m_content;
+	return m_content.c_str();
 }
 
-void TrayMenuItem::Content(const LPWSTR& value) noexcept
+void TrayMenuItem::Content(_In_ LPCWSTR value) noexcept
 {
-	wcscpy_s(m_content, value);
+	m_content = std::wstring(value);
 	RefreshIfAttached();
 }
 
