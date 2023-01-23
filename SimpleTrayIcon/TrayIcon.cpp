@@ -5,10 +5,6 @@
 
 EXTERN_C static IMAGE_DOS_HEADER __ImageBase;
 
-// {ECEAEC05-4D8B-4744-94A2-54859B6C3B70}
-static constexpr GUID s_trayIconGuid =
-{ 0xeceaec05, 0x4d8b, 0x4744, { 0x94, 0xa2, 0x54, 0x85, 0x9b, 0x6c, 0x3b, 0x70 } };
-
 TrayIcon::TrayIcon(const HICON hIcon, const LPWSTR tip, const ClickHandler onDoubleClick)
 {
 	m_onDoubleClick = onDoubleClick;
@@ -52,11 +48,11 @@ TrayIcon::TrayIcon(const HICON hIcon, const LPWSTR tip, const ClickHandler onDou
 	trayIconData.uID = m_iconNotifyWm;
 	trayIconData.uCallbackMessage = m_iconNotifyWm;
 	wcscpy_s(trayIconData.szTip, sizeof(trayIconData.szTip) / sizeof(WCHAR), tip);
-	trayIconData.uFlags = NIF_ICON | NIF_TIP | NIF_MESSAGE | NIF_GUID;
+	trayIconData.uFlags = NIF_ICON | NIF_TIP | NIF_MESSAGE;
 	ChangeWindowMessageFilterEx(hWnd, WM_COMMAND, MSGFLT_ALLOW, NULL);
 
-	if (!m_trayIconCreated) {
-		m_trayIconCreated = Shell_NotifyIcon(NIM_ADD, &trayIconData);
+	if (!m_trayIconCreated && !Shell_NotifyIconW(NIM_ADD, &trayIconData)) {
+		throw Win32Exception("Failed to notify shell about icon.");
 	}
 }
 
