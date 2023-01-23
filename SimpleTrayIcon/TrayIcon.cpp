@@ -2,19 +2,22 @@
 #include "TrayIcon.h"
 
 #define WM_TRAYNOTIFY L"WM_IconNotify"
+#define WM_TRAYMOUSEMESSAGE (WM_USER + 420)
 
 EXTERN_C static IMAGE_DOS_HEADER __ImageBase;
 
+static const wchar_t TrayIconWndClass[] = L"TrayIconWnd";
+static volatile UINT s_nextId = 0;
+
 TrayIcon::TrayIcon(const HICON hIcon, const LPWSTR tip, const std::function<void()> onDoubleClick)
+	: m_trayIconData(TrayIconManager::Create())
 {
 	m_onDoubleClick = onDoubleClick;
-	m_iconNotifyWm = RegisterWindowMessage(WM_TRAYNOTIFY);
 
 	const WNDCLASS wc = {
 		.style = CS_HREDRAW | CS_VREDRAW,
 		.lpfnWndProc = WndProc,
 		.hInstance = reinterpret_cast<HINSTANCE>(&__ImageBase),
-		.hIcon = hIcon,
 		.hCursor = LoadCursor(NULL, IDC_ARROW),
 		.hbrBackground = 0,
 		.lpszClassName = TrayIconWndClass,
@@ -24,7 +27,7 @@ TrayIcon::TrayIcon(const HICON hIcon, const LPWSTR tip, const std::function<void
 		throw Win32Exception("Failed to register tray menu class.");
 	}
 
-	auto hWnd = CreateWindowEx(0L,
+	auto hWnd = m_trayIconHwnd = CreateWindowEx(0L,
 		wc.lpszClassName,
 		TrayIconWndClass,
 		WS_OVERLAPPEDWINDOW | WS_POPUP,
@@ -41,19 +44,21 @@ TrayIcon::TrayIcon(const HICON hIcon, const LPWSTR tip, const std::function<void
 		throw Win32Exception("Failed to create tray menu window.");
 	}
 
-	auto& trayIconData = m_trayIconData.Create();
+	NOTIFYICONDATA trayIconData{};
 	trayIconData.cbSize = sizeof(NOTIFYICONDATA);
 	trayIconData.hIcon = hIcon;
 	trayIconData.hWnd = hWnd;
-	trayIconData.uID = m_iconNotifyWm;
-	trayIconData.uCallbackMessage = m_iconNotifyWm;
+	trayIconData.uID = InterlockedIncrement(&s_nextId);
+	trayIconData.uCallbackMessage = WM_TRAYMOUSEMESSAGE;
 	wcscpy_s(trayIconData.szTip, sizeof(trayIconData.szTip) / sizeof(WCHAR), tip);
 	trayIconData.uFlags = NIF_ICON | NIF_TIP | NIF_MESSAGE;
 	ChangeWindowMessageFilterEx(hWnd, WM_COMMAND, MSGFLT_ALLOW, NULL);
 
-	if (!m_trayIconCreated && !Shell_NotifyIconW(NIM_ADD, &trayIconData)) {
+	if (!Shell_NotifyIconW(NIM_ADD, &trayIconData)) {
 		throw Win32Exception("Failed to notify shell about icon.");
 	}
+
+	m_trayIconData->emplace(trayIconData);
 }
 
 TrayIcon::~TrayIcon()
@@ -61,18 +66,12 @@ TrayIcon::~TrayIcon()
 	if (m_trayIconHwnd) {
 		SendMessageTimeout(m_trayIconHwnd, WM_CLOSE, 0, 0, SMTO_ABORTIFHUNG | SMTO_BLOCK, 3999, NULL);
 	}
-
-	if (!m_trayIconCreated && m_trayIconData.Exists()) {
-		TrayIconManager::Free(m_trayIconData);
-	}
-
-	delete m_trayMenuPopup;
 }
 
 void TrayIcon::AddItem(TrayMenuItemBase& item) noexcept
 {
-	if (m_trayMenuPopup != NULL) {
-		m_trayMenuPopup->Attach(item);
+	if (m_trayMenuPopup) {
+		m_trayMenuPopup->get()->Attach(item);
 	}
 
 	m_items.push_back(item);
@@ -80,7 +79,7 @@ void TrayIcon::AddItem(TrayMenuItemBase& item) noexcept
 
 void TrayIcon::RemoveItem(TrayMenuItemBase& item)
 {
-	if (m_trayMenuPopup != NULL) {
+	if (m_trayMenuPopup) {
 		item.Detach();
 	}
 
@@ -99,16 +98,14 @@ void TrayIcon::RemoveItem(TrayMenuItemBase& item)
 
 void TrayIcon::SetIcon(const HICON hIcon) noexcept
 {
-	if (!m_trayIconData.Exists()) {
+	if (!m_trayIconData->has_value()) {
 		return;
 	}
 
-	auto& trayIconData = m_trayIconData.get();
+	auto& trayIconData = m_trayIconData->value();
 	trayIconData.hIcon = hIcon;
 
-	if (m_trayIconCreated) {
-		m_trayIconCreated = Shell_NotifyIcon(NIM_MODIFY, &trayIconData);
-	}
+	Shell_NotifyIcon(NIM_MODIFY, &trayIconData);
 }
 
 LRESULT CALLBACK TrayIcon::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) noexcept
@@ -122,7 +119,6 @@ LRESULT CALLBACK TrayIcon::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARA
 	else {
 		auto pCs = (CREATESTRUCT*)lParam;
 		auto pInstance = (TrayIcon*)pCs->lpCreateParams;
-		pInstance->m_trayIconHwnd = hWnd;
 		SetWindowLongPtr(hWnd, GWLP_USERDATA, (LONG_PTR)pInstance);
 	}
 
@@ -136,19 +132,12 @@ inline TrayIcon* TrayIcon::GetInstance(const HWND hWnd)
 
 LRESULT TrayIcon::TrayIconWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam) {
 	switch (message) {
-	case WM_CREATE:
-		if (m_taskbarRestartWm == 0) {
-			m_trayIconHwnd = hWnd;
-			m_taskbarRestartWm = RegisterWindowMessage(L"TaskbarCreated");
-		}
-		break;
-
 	case WM_DESTROY:
-		if (m_trayIconCreated && m_trayIconData.Exists()) {
-			Shell_NotifyIcon(NIM_DELETE, &m_trayIconData.get());
+		if (m_trayIconData->has_value()) {
+			m_trayIconData->reset();
 		}
 
-		m_trayIconCreated = false;
+		m_trayIconData->reset();
 		PostQuitMessage(0);
 		break;
 
@@ -160,45 +149,30 @@ LRESULT TrayIcon::TrayIconWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM
 		for (size_t i = 0; i < m_items.size(); i++)
 		{
 			m_items.at(i).get().OnCommand(wParam);
-
 		}
 		break;
-
-	case WM_WINDOWPOSCHANGING:
-		if (!m_trayIconCreated && m_trayIconData.Exists()) {
-			m_trayIconCreated = Shell_NotifyIcon(NIM_ADD, &m_trayIconData.get());
+	case WM_TRAYMOUSEMESSAGE:
+		switch (lParam) {
+		case WM_RBUTTONUP:
+		case WM_CONTEXTMENU:
+			if (!m_trayMenuPopup) {
+				m_trayMenuPopup.emplace(std::make_unique<TrayMenuPopup>(hWnd, m_items));
+			}
+			m_trayMenuPopup->get()->Track();
+			break;
+		case WM_LBUTTONDBLCLK:
+			if (m_onDoubleClick != NULL) {
+				m_onDoubleClick();
+			}
+			break;
 		}
 		break;
-	case WM_PAINT:
-		break;
-	case WM_ENTERMENULOOP:
+	case WM_INITMENUPOPUP:
+		if (!m_trayMenuPopup) {
+			m_trayMenuPopup.emplace(std::make_unique<TrayMenuPopup>(hWnd, m_items));
+		}
 		break;
 	default:
-		if (message == m_iconNotifyWm) {
-			switch (lParam) {
-			case WM_LBUTTONUP:
-				break;
-			case WM_RBUTTONUP:
-			case WM_CONTEXTMENU:
-				if (m_trayMenuPopup == NULL) {
-					m_trayMenuPopup = new TrayMenuPopup(hWnd, m_items);
-				}
-
-				m_trayMenuPopup->Track();
-				break;
-			case WM_LBUTTONDBLCLK:
-				if (m_onDoubleClick != NULL) {
-					m_onDoubleClick();
-				}
-				break;
-			}
-		}
-		else if (message == m_taskbarRestartWm) {
-			if (m_trayIconData.Exists()) {
-				m_trayIconCreated = Shell_NotifyIcon(NIM_ADD, &m_trayIconData.get());
-			}
-		}
-
 		break;
 	}
 

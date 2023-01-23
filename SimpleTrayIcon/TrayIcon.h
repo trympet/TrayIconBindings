@@ -6,12 +6,8 @@
 class TrayIcon
 {
 private:
-	static const inline wchar_t* TrayIconWndClass = L"TrayIconWnd";
-	UINT m_iconNotifyWm;
-	UINT m_taskbarRestartWm{};
-	BOOL m_trayIconCreated = false;
-	TrayIconDataWrapper& m_trayIconData = TrayIconManager::Create();
-	TrayMenuPopup* m_trayMenuPopup = NULL;
+	std::shared_ptr<TrayIconDataWrapper> m_trayIconData;
+	std::optional<std::unique_ptr<TrayMenuPopup>> m_trayMenuPopup;
 	HWND m_trayIconHwnd = NULL;
 	std::vector<std::reference_wrapper<TrayMenuItemBase>> m_items;
 	std::function<void()> m_onDoubleClick;

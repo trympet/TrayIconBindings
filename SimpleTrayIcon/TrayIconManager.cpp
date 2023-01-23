@@ -1,22 +1,21 @@
 #include "pch.h"
 #include "TrayIconManager.h"
+#include <memory>
 
-TrayIconDataWrapper& TrayIconManager::Create() noexcept
-{
-	m_data.push_back(TrayIconDataWrapper());
-	return m_data.back();
-}
+static std::vector<std::weak_ptr<TrayIconDataWrapper>> items;
 
-void TrayIconManager::Free(TrayIconDataWrapper& data) noexcept
+std::shared_ptr<TrayIconDataWrapper> TrayIconManager::Create() noexcept
 {
-	data.TryFree();
+	auto shared = std::make_shared<TrayIconDataWrapper>();
+	items.push_back(shared);
+	return shared;
 }
 
 void TrayIconManager::Cleanup() noexcept
 {
-	for (auto& item : m_data) {
-		if (item.Exists()) {
-			Shell_NotifyIcon(NIM_DELETE, &item.get());
+	for (auto& item : items) {
+		if (std::shared_ptr<TrayIconDataWrapper> spt = item.lock()) {
+			spt->reset();
 		}
 	}
 }

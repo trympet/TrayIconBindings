@@ -14,17 +14,9 @@ MyTrayMenu::MyTrayMenu(const HICON hIcon, const LPWSTR tip, const TrayMenuClickH
 	m_onDoubleClick = onDoubleClick;
 }
 
-MyTrayMenu::~MyTrayMenu() noexcept
-{
-	Close();
-}
-
 void MyTrayMenu::Show() noexcept
 {
-	if (!m_trayIcon) {
-		m_trayIcon = new TrayIcon(m_hIcon, m_tip, std::bind(m_onDoubleClick, this));
-		m_trayIcon.emplace(new TrayIcon(m_hIcon, m_tip, std::bind(m_onDoubleClick, this)));
-	}
+	m_trayIcon.emplace(std::make_unique<TrayIcon>(m_hIcon, m_tip, std::bind(m_onDoubleClick, this)));
 
 	while (!m_items.empty()) {
 		const auto& item = m_items.front();
@@ -36,7 +28,7 @@ void MyTrayMenu::Show() noexcept
 void MyTrayMenu::AddItem(TrayMenuItemBase& pTrayMenuItem) noexcept
 {
 	if (m_trayIcon) {
-		m_trayIcon->AddItem(pTrayMenuItem);
+		m_trayIcon->get()->AddItem(pTrayMenuItem);
 		m_addedItems.push(pTrayMenuItem);
 	}
 	else {
@@ -47,7 +39,7 @@ void MyTrayMenu::AddItem(TrayMenuItemBase& pTrayMenuItem) noexcept
 void MyTrayMenu::RemoveItem(TrayMenuItemBase& pTrayMenuItem) noexcept
 {
 	if (m_trayIcon) {
-		m_trayIcon->RemoveItem(pTrayMenuItem);
+		m_trayIcon->get()->RemoveItem(pTrayMenuItem);
 		RemoveItem(m_addedItems, pTrayMenuItem);
 	}
 	else {
@@ -57,17 +49,14 @@ void MyTrayMenu::RemoveItem(TrayMenuItemBase& pTrayMenuItem) noexcept
 
 void MyTrayMenu::Close()
 {
-	if (m_trayIcon) {
-		delete m_trayIcon;
-		m_trayIcon = NULL;
-	}
+	m_trayIcon.reset();
 }
 
 void MyTrayMenu::SetIcon(const HICON hIcon) noexcept
 {
 	m_hIcon = hIcon;
 	if (m_trayIcon) {
-		m_trayIcon->SetIcon(hIcon);
+		m_trayIcon->get()->SetIcon(hIcon);
 	}
 }
 

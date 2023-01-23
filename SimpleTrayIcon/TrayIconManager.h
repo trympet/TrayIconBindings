@@ -1,41 +1,49 @@
 #pragma once
+#include <memory>
+#include <optional>
 
 class TrayIconDataWrapper {
 private:
-	NOTIFYICONDATA* m_item = NULL;
+	std::optional<NOTIFYICONDATA> m_item;
 public:
-	constexpr operator NOTIFYICONDATA& () const noexcept {
-		return *m_item;
+	TrayIconDataWrapper() = default;
+	~TrayIconDataWrapper() {
+		reset();
 	}
 
-	NOTIFYICONDATA& Create() noexcept {
-		return *(m_item = new NOTIFYICONDATA{});
+	constexpr NOTIFYICONDATA& emplace(NOTIFYICONDATA& value) {
+		return m_item.emplace(value);
 	}
 
-	_NODISCARD constexpr NOTIFYICONDATA& get() const noexcept {
-		return *m_item;
-	}
-
-	constexpr bool Exists() const noexcept { return m_item != NULL; }
-
-	void TryFree() noexcept {
-		if (Exists()) {
-			delete m_item;
-			m_item = NULL;
+	constexpr void reset() {
+		if (m_item) {
+			try
+			{
+				Shell_NotifyIcon(NIM_DELETE, &m_item.value());
+				m_item.reset();
+			}
+			catch (const std::bad_optional_access&)
+			{
+				// Not thread safe, but don't propagate error if we fail.
+			}
 		}
+	}
+
+	constexpr bool has_value() {
+		return m_item.has_value();
+	}
+
+	_NODISCARD constexpr NOTIFYICONDATA& value() noexcept {
+		return m_item.value();
 	}
 };
 
 
 class TrayIconManager
 {
-private:
-	inline static std::vector<TrayIconDataWrapper> m_data{};
-
 public:
 	// Returns a new empty struct.
-	static TrayIconDataWrapper& Create() noexcept;
-	static void Free(TrayIconDataWrapper& data) noexcept;
+	static std::shared_ptr<TrayIconDataWrapper> Create() noexcept;
 	// Notifies the shell that we're finished; prevents lingering icons.
 	static void Cleanup() noexcept;
 };

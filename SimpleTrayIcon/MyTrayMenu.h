@@ -15,14 +15,10 @@ private:
 	std::queue<std::reference_wrapper<TrayMenuItemBase>> m_addedItems;
 	std::queue<std::reference_wrapper<TrayMenuItemBase>> m_items;
 	TrayMenuClickHandler m_onDoubleClick;
-
-	// Nullable
-	TrayIcon* m_trayIcon = NULL;
-	std::optional<TrayIcon> m_trayIcon2;
+	std::optional<std::unique_ptr<TrayIcon>> m_trayIcon;
 
 public:
 	MyTrayMenu(const HICON hIcon, const LPWSTR tip, const TrayMenuClickHandler onDoubleClick) noexcept;
-	~MyTrayMenu() noexcept;
 	void Show() noexcept;
 	void AddItem(TrayMenuItemBase& pTrayMenuItem) noexcept;
 	void RemoveItem(TrayMenuItemBase& pTrayMenuItem) noexcept;
