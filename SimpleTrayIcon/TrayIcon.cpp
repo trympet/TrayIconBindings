@@ -5,7 +5,7 @@
 
 EXTERN_C static IMAGE_DOS_HEADER __ImageBase;
 
-TrayIcon::TrayIcon(const HICON hIcon, const LPWSTR tip, const ClickHandler onDoubleClick)
+TrayIcon::TrayIcon(const HICON hIcon, const LPWSTR tip, const std::function<void()> onDoubleClick)
 {
 	m_onDoubleClick = onDoubleClick;
 	m_iconNotifyWm = RegisterWindowMessage(WM_TRAYNOTIFY);

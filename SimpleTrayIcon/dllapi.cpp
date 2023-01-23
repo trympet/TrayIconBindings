@@ -13,7 +13,7 @@
 
 
 
-TRAYAPI TrayMenuCreate(const HICON hIcon, const _In_ LPWSTR tip, const _In_ ClickHandler onDoubleClick, _Outptr_result_nullonfailure_ MyTrayMenu** pInstance) noexcept
+TRAYAPI TrayMenuCreate(const HICON hIcon, const _In_ LPWSTR tip, const _In_ TrayMenuClickHandler onDoubleClick, _Outptr_result_nullonfailure_ MyTrayMenu** pInstance) noexcept
 {
 	*pInstance = NULL;
 	GUARD_NOT_NULL(hIcon);

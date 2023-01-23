@@ -3,7 +3,10 @@
 #include "MyTrayMenu.h"
 #include "TrayIcon.h"
 #include <queue>
+#include <optional>
 using namespace std;
+class MyTrayMenu;
+typedef void(CALLBACK* TrayMenuClickHandler)(const MyTrayMenu*);
 class MyTrayMenu
 {
 private:
@@ -11,13 +14,14 @@ private:
 	WCHAR m_tip[128];
 	std::queue<std::reference_wrapper<TrayMenuItemBase>> m_addedItems;
 	std::queue<std::reference_wrapper<TrayMenuItemBase>> m_items;
-	ClickHandler m_onDoubleClick;
+	TrayMenuClickHandler m_onDoubleClick;
 
 	// Nullable
 	TrayIcon* m_trayIcon = NULL;
+	std::optional<TrayIcon> m_trayIcon2;
 
 public:
-	MyTrayMenu(const HICON hIcon, const LPWSTR tip, const ClickHandler onDoubleClick) noexcept;
+	MyTrayMenu(const HICON hIcon, const LPWSTR tip, const TrayMenuClickHandler onDoubleClick) noexcept;
 	~MyTrayMenu() noexcept;
 	void Show() noexcept;
 	void AddItem(TrayMenuItemBase& pTrayMenuItem) noexcept;

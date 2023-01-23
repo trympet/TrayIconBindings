@@ -2,6 +2,7 @@
 #include "TrayMenuItem.h"
 #include "TrayMenuPopup.h"
 #include "TrayIconManager.h"
+#include <functional>
 class TrayIcon
 {
 private:
@@ -13,9 +14,9 @@ private:
 	TrayMenuPopup* m_trayMenuPopup = NULL;
 	HWND m_trayIconHwnd = NULL;
 	std::vector<std::reference_wrapper<TrayMenuItemBase>> m_items;
-	ClickHandler m_onDoubleClick;
+	std::function<void()> m_onDoubleClick;
 public:
-	TrayIcon(const HICON hIcon, const LPWSTR tip, const ClickHandler onDoubleClick);
+	TrayIcon(const HICON hIcon, const LPWSTR tip, const std::function<void()> onDoubleClick);
 	~TrayIcon();
 	void AddItem(TrayMenuItemBase& pTrayMenuItem) noexcept;
 	void RemoveItem(TrayMenuItemBase& pTrayMenuItem);

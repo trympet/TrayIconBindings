@@ -5,7 +5,6 @@
 
 class TrayMenuItem;
 
-typedef void(CALLBACK* ClickHandler)();
 typedef void(CALLBACK* TrayMenuItemClickHandler)(const TrayMenuItem*, UINT);
 
 class TrayMenuItem : public TrayMenuItemBase

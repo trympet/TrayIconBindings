@@ -3,10 +3,11 @@
 #include "TrayMenuItem.h"
 #include "TrayIcon.h"
 #include "MyTrayMenu.h"
+#include <functional>
 
 using namespace std;
 
-MyTrayMenu::MyTrayMenu(const HICON hIcon, const LPWSTR tip, const ClickHandler onDoubleClick) noexcept
+MyTrayMenu::MyTrayMenu(const HICON hIcon, const LPWSTR tip, const TrayMenuClickHandler onDoubleClick) noexcept
 {
 	m_hIcon = hIcon;
 	wcscpy_s(m_tip, tip);
@@ -21,7 +22,8 @@ MyTrayMenu::~MyTrayMenu() noexcept
 void MyTrayMenu::Show() noexcept
 {
 	if (!m_trayIcon) {
-		m_trayIcon = new TrayIcon(m_hIcon, m_tip, m_onDoubleClick);
+		m_trayIcon = new TrayIcon(m_hIcon, m_tip, std::bind(m_onDoubleClick, this));
+		m_trayIcon.emplace(new TrayIcon(m_hIcon, m_tip, std::bind(m_onDoubleClick, this)));
 	}
 
 	while (!m_items.empty()) {

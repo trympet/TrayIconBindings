@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows.Input;
 using static SimpleTrayIcon.NativeMethods;
@@ -15,15 +18,26 @@ namespace SimpleTrayIcon
 
     public class TrayMenuItem : TrayMenuItemBase, IDisposable
     {
+        private static readonly Dictionary<IntPtr, WeakReference<Action<uint>>> s_clickHandlers = new();
+#if !NET6_0_OR_GREATER
         private readonly TrayMenuItemClickHandler _onClickedDelegate; // store to keep delegate pinned.
+#endif
         private bool _disposedValue;
         private string _content = string.Empty;
         private bool _isChecked;
 
         public TrayMenuItem()
         {
-            _onClickedDelegate = OnClick;
-            HInstanceRef = TrayMenuItemCreate(_onClickedDelegate);
+            unsafe
+            {
+#if NET6_0_OR_GREATER
+                var pointer = HInstanceRef = TrayMenuItemCreate(&ClickCallback);
+                s_clickHandlers[pointer] = new WeakReference<Action<uint>>(OnClick);
+#else
+                _onClickedDelegate = ClickCallback;
+                HInstanceRef = TrayMenuItemCreate((delegate* unmanaged[Stdcall]<IntPtr, uint, void>)Marshal.GetFunctionPointerForDelegate(_onClickedDelegate));
+#endif
+            }
         }
 
         ~TrayMenuItem()
@@ -98,11 +112,11 @@ namespace SimpleTrayIcon
             }
         }
 
-        private void OnClick(IntPtr sender, uint e)
+        private void OnClick(uint id)
         {
             if (!_disposedValue)
             {
-                OnClick(new TrayMenuItemClickedEventArgs { CommandId = e });
+                OnClick(new TrayMenuItemClickedEventArgs { CommandId = id });
             }
         }
 
@@ -113,5 +127,29 @@ namespace SimpleTrayIcon
                 throw new ObjectDisposedException(nameof(TrayMenuItem));
             }
         }
+#if NET6_0_OR_GREATER
+        [UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
+        private static void ClickCallback(IntPtr hInstance, uint id)
+        {
+            if (!s_clickHandlers.TryGetValue(hInstance, out var reference))
+            {
+                Debug.Fail("A registered callback was removed.");
+                return;
+            }
+
+            if (!reference.TryGetTarget(out var callback))
+            {
+                s_clickHandlers.Remove(hInstance);
+                return;
+            }
+
+            callback(id);
+        }
+#else
+        private void ClickCallback(IntPtr hInstance, uint id)
+        {
+            OnClick(id);
+        }
+#endif
     }
 }

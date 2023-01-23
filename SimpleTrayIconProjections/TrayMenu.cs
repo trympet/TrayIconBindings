@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 using System.Windows.Input;
 using static SimpleTrayIcon.NativeMethods;
 
@@ -11,7 +14,10 @@ namespace SimpleTrayIcon
 {
     public partial class TrayMenu : IDisposable
     {
-        private readonly ClickHandler _onDoubleClickDelegate;
+        private static readonly Dictionary<IntPtr, WeakReference<Action>> s_clickHandlers = new();
+#if !NET6_0_OR_GREATER
+        private readonly ClickHandler _onDoubleClickDelegate; // keep delegate alive
+#endif
         private readonly Action<TrayMenuItemBase> _onAddedDelegate;
         private readonly Action<TrayMenuItemBase> _onRemovedDelegate;
         private readonly bool _ownsItems;
@@ -22,12 +28,20 @@ namespace SimpleTrayIcon
 
         public TrayMenu(Icon icon, string tip, bool ownsItems = true)
         {
-            _onDoubleClickDelegate = OnDoubleClick;
             _onAddedDelegate = OnItemAdded;
             _onRemovedDelegate = OnItemRemoved;
             _ownsItems = ownsItems;
             _icon = icon ?? throw new ArgumentNullException(nameof(icon));
-            _hInstance = TrayMenuCreate(_icon.Handle, tip, _onDoubleClickDelegate);
+            unsafe
+            {
+#if NET6_0_OR_GREATER
+                _hInstance = TrayMenuCreate(_icon.Handle, tip, &OnClick);
+                s_clickHandlers[_hInstance] = new WeakReference<Action>(ClickCallback);
+#else
+                _onDoubleClickDelegate = ClickCallback;
+                _hInstance = TrayMenuCreate(_icon.Handle, tip, (delegate* unmanaged[Stdcall]<IntPtr, void>)Marshal.GetFunctionPointerForDelegate(_onDoubleClickDelegate));
+#endif
+            }
             _itemSubscription = ItemSubscription.Create(_items, _onAddedDelegate, _onRemovedDelegate);
             Show();
         }
@@ -166,7 +180,7 @@ namespace SimpleTrayIcon
             }
         }
 
-        protected virtual void OnDoubleClick()
+        protected virtual void ClickCallback()
         {
             DoubleClick?.Invoke(this, EventArgs.Empty);
 
@@ -175,5 +189,25 @@ namespace SimpleTrayIcon
                 Command.Execute(this);
             }
         }
+
+#if NET6_0_OR_GREATER
+        [UnmanagedCallersOnly(CallConvs = new[] { typeof(CallConvStdcall) })]
+        private static void OnClick(IntPtr hInstance)
+        {
+            if (!s_clickHandlers.TryGetValue(hInstance, out var reference))
+            {
+                Debug.Fail("A registered callback was removed.");
+                return;
+            }
+
+            if (!reference.TryGetTarget(out var callback))
+            {
+                s_clickHandlers.Remove(hInstance);
+                return;
+            }
+
+            callback();
+        }
+#endif
     }
 }

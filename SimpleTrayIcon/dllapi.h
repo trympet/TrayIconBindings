@@ -3,7 +3,7 @@
 #include "TrayMenuSeparator.h"
 #define TRAYAPI EXTERN_C __declspec(dllexport) HRESULT WINAPI
 
-TRAYAPI TrayMenuCreate(const HICON hIcon, const _In_ LPWSTR tip, const _In_ ClickHandler onDoubleClick, _Outptr_result_nullonfailure_ MyTrayMenu** pInstance) noexcept;
+TRAYAPI TrayMenuCreate(const HICON hIcon, const _In_ LPWSTR tip, const _In_ TrayMenuClickHandler onDoubleClick, _Outptr_result_nullonfailure_ MyTrayMenu** pInstance) noexcept;
 TRAYAPI TrayMenuRelease(const _Inout_ MyTrayMenu** pInstance) noexcept;
 TRAYAPI TrayMenuShow(_In_ MyTrayMenu* pInstance) noexcept;
 TRAYAPI TrayMenuClose(_In_ MyTrayMenu* pInstance) noexcept;
