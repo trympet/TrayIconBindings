@@ -21,7 +21,7 @@ namespace SimpleTrayIcon
         private readonly Action<TrayMenuItemBase> _onAddedDelegate;
         private readonly Action<TrayMenuItemBase> _onRemovedDelegate;
         private readonly bool _ownsItems;
-        private Icon? _icon;
+        private Icon _icon;
         private IntPtr _hInstance;
         private ICollection<TrayMenuItemBase> _items = new ObservableCollection<TrayMenuItemBase>();
         private ItemSubscription<TrayMenuItemBase>? _itemSubscription;
@@ -53,7 +53,7 @@ namespace SimpleTrayIcon
 
         public event EventHandler<EventArgs>? DoubleClick;
 
-        public ICommand Command { get; set; }
+        public ICommand? Command { get; set; }
 
 #if NET6_0_OR_GREATER
         [MemberNotNullWhen(false, nameof(_icon))]
@@ -159,7 +159,7 @@ namespace SimpleTrayIcon
                     _hInstance = IntPtr.Zero;
                 }
 
-                _icon = null;
+                _icon = null!;
                 _itemSubscription = null;
 
                 DisposedValue = true;
