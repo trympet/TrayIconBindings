@@ -16,6 +16,7 @@
     <FullPlatform>$(__Platform)</FullPlatform>
     <BinariesDirectory>$(MSBuildThisFileDirectory)bin</BinariesDirectory>
     <OutputPath>$(BinariesDirectory)\$(FullPlatform)\$(Configuration)\$(MSBuildProjectName)\$(TargetFramework)</OutputPath>
+    <OutputPath Condition="'$(TrayIconOneCore)' == 'true'">$(OutputPath)\onecore</OutputPath>
     <OutDir>$(OutputPath)\</OutDir>
     <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
