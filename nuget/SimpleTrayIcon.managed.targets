@@ -1,28 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
-  <PropertyGroup>
-    <trayicon-Platform Condition="$(RuntimeIdentifier.EndsWith('-x64'))">x64</trayicon-Platform>
-    <trayicon-Platform Condition="$(RuntimeIdentifier.EndsWith('-x86'))">x86</trayicon-Platform>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(trayicon-Platform)' == ''">
-    <trayicon-Platform Condition="'$(Platform)' == 'Win32'">x86</trayicon-Platform>
-    <trayicon-Platform Condition="'$(Platform)' != 'Win32'">$(Platform)</trayicon-Platform>
-    <trayicon-Platform Condition="'$(Platform)' == 'AnyCPU'"></trayicon-Platform>
-  </PropertyGroup>
-
-  <PropertyGroup>
-    <SimpleTrayIconWarnNoPlatform Condition="'$(SimpleTrayIconWarnNoPlatform)' == ''">true</SimpleTrayIconWarnNoPlatform>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <Reference Include="SimpleTrayIcon.dll" />
-    <ReferenceCopyLocalPaths Include="$(MSBuildThisFileDirectory)..\..\runtimes\win10-$(trayicon-Platform)\native\SimpleTrayIcon.dll" Condition="'$(trayicon-Platform)' != ''" />
-  </ItemGroup>
-
-  <Target Name="SimpleTrayIconWarnNoPlatform" BeforeTargets="BeforeBuild" Condition="'$(trayicon-Platform)' == '' and '$(SimpleTrayIconWarnNoPlatform)' == 'true'">
-    <Warning Text="SimpleTrayIcon.dll could not be copied because the AnyCPU platform is being used. Please specify a specific platform to copy this file." />
-  </Target>
-
 </Project>

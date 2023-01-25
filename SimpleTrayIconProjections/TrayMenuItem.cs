@@ -19,9 +19,13 @@ namespace SimpleTrayIcon
     public class TrayMenuItem : TrayMenuItemBase, IDisposable
     {
         private static readonly Dictionary<IntPtr, WeakReference<Action<uint>>> s_clickHandlers = new();
+        private readonly
 #if !NET6_0_OR_GREATER
-        private readonly TrayMenuItemClickHandler _onClickedDelegate; // store to keep delegate pinned.
+        TrayMenuItemClickHandler
+#else
+        Action<uint>
 #endif
+        _onClickedDelegate; // keep alive
         private bool _disposedValue;
         private string _content = string.Empty;
         private bool _isChecked;
@@ -32,10 +36,9 @@ namespace SimpleTrayIcon
             {
 #if NET6_0_OR_GREATER
                 var pointer = HInstanceRef = TrayMenuItemCreate(&ClickCallback);
-                s_clickHandlers[pointer] = new WeakReference<Action<uint>>(OnClick);
+                s_clickHandlers[pointer] = new WeakReference<Action<uint>>(_onClickedDelegate = OnClick);
 #else
-                _onClickedDelegate = ClickCallback;
-                HInstanceRef = TrayMenuItemCreate((delegate* unmanaged[Stdcall]<IntPtr, uint, void>)Marshal.GetFunctionPointerForDelegate(_onClickedDelegate));
+                HInstanceRef = TrayMenuItemCreate((delegate* unmanaged[Stdcall]<IntPtr, uint, void>)Marshal.GetFunctionPointerForDelegate(_onClickedDelegate = ClickCallback));
 #endif
             }
         }

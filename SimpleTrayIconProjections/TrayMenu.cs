@@ -15,9 +15,13 @@ namespace SimpleTrayIcon
     public partial class TrayMenu : IDisposable
     {
         private static readonly Dictionary<IntPtr, WeakReference<Action>> s_clickHandlers = new();
+        private readonly
 #if !NET6_0_OR_GREATER
-        private readonly ClickHandler _onDoubleClickDelegate; // keep delegate alive
+        ClickHandler
+#else
+        Action
 #endif
+        _onDoubleClickDelegate; // keep delegate alive
         private readonly Action<TrayMenuItemBase> _onAddedDelegate;
         private readonly Action<TrayMenuItemBase> _onRemovedDelegate;
         private readonly bool _ownsItems;
@@ -36,10 +40,9 @@ namespace SimpleTrayIcon
             {
 #if NET6_0_OR_GREATER
                 _hInstance = TrayMenuCreate(_icon.Handle, tip, &OnClick);
-                s_clickHandlers[_hInstance] = new WeakReference<Action>(ClickCallback);
+                s_clickHandlers[_hInstance] = new WeakReference<Action>(_onDoubleClickDelegate = ClickCallback);
 #else
-                _onDoubleClickDelegate = ClickCallback;
-                _hInstance = TrayMenuCreate(_icon.Handle, tip, (delegate* unmanaged[Stdcall]<IntPtr, void>)Marshal.GetFunctionPointerForDelegate(_onDoubleClickDelegate));
+                _hInstance = TrayMenuCreate(_icon.Handle, tip, (delegate* unmanaged[Stdcall]<IntPtr, void>)Marshal.GetFunctionPointerForDelegate(_onDoubleClickDelegate = ClickCallback));
 #endif
             }
             _itemSubscription = ItemSubscription.Create(_items, _onAddedDelegate, _onRemovedDelegate);
