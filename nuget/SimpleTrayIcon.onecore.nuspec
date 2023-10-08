@@ -32,10 +32,10 @@
         <file target="lib\net472\SimpleTrayIconProjections.dll"     src="bin\AnyCPU\Release\SimpleTrayIconProjections\net472\SimpleTrayIconProjections.dll" />
         <file target="lib\net472\SimpleTrayIconProjections.pdb"     src="bin\AnyCPU\Release\SimpleTrayIconProjections\net472\SimpleTrayIconProjections.pdb" />
   
-        <file target="runtimes\win10-x64\native\SimpleTrayIcon.dll" src="bin\x64\Release\SimpleTrayIcon\onecore\SimpleTrayIcon\SimpleTrayIcon.dll" />
-        <file target="runtimes\win10-x64\native\SimpleTrayIcon.pdb" src="bin\x64\Release\SimpleTrayIcon\onecore\SimpleTrayIcon\SimpleTrayIcon.pdb" />
-        <file target="runtimes\win10-x86\native\SimpleTrayIcon.dll" src="bin\x86\Release\SimpleTrayIcon\onecore\SimpleTrayIcon\SimpleTrayIcon.dll" />
-        <file target="runtimes\win10-x86\native\SimpleTrayIcon.pdb" src="bin\x86\Release\SimpleTrayIcon\onecore\SimpleTrayIcon\SimpleTrayIcon.pdb" />
+        <file target="runtimes\win-x64\native\SimpleTrayIcon.dll" src="bin\x64\Release\SimpleTrayIcon\onecore\SimpleTrayIcon\SimpleTrayIcon.dll" />
+        <file target="runtimes\win-x64\native\SimpleTrayIcon.pdb" src="bin\x64\Release\SimpleTrayIcon\onecore\SimpleTrayIcon\SimpleTrayIcon.pdb" />
+        <file target="runtimes\win-x86\native\SimpleTrayIcon.dll" src="bin\x86\Release\SimpleTrayIcon\onecore\SimpleTrayIcon\SimpleTrayIcon.dll" />
+        <file target="runtimes\win-x86\native\SimpleTrayIcon.pdb" src="bin\x86\Release\SimpleTrayIcon\onecore\SimpleTrayIcon\SimpleTrayIcon.pdb" />
 
     </files>
 </package>
