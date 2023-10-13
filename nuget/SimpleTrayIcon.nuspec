@@ -12,7 +12,8 @@
         <license type="expression">MIT</license>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <copyright>© Trym Lund Flogard. All rights reserved.</copyright>
-        <tags>tray icon win32 systray notify mvvm .net 6</tags>
+        <tags>tray icon win32 systray notify mvvm .net 6 trayicon</tags>
+        <readme>docs\README.md</readme>
 
         <dependencies>
             <group targetFramework="net6.0">
@@ -28,6 +29,8 @@
     </metadata>
 
     <files>
+        <file target="docs\" src="README.md" />
+
         <file target="lib\net6.0\SimpleTrayIconProjections.dll"     src="bin\AnyCPU\Release\SimpleTrayIconProjections\net6.0\SimpleTrayIconProjections.dll" />
         <file target="lib\net6.0\SimpleTrayIconProjections.pdb"     src="bin\AnyCPU\Release\SimpleTrayIconProjections\net6.0\SimpleTrayIconProjections.pdb" />
         <file target="lib\net7.0\SimpleTrayIconProjections.dll"     src="bin\AnyCPU\Release\SimpleTrayIconProjections\net7.0\SimpleTrayIconProjections.dll" />
