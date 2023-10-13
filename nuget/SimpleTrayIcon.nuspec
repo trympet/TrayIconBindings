@@ -12,7 +12,8 @@
         <license type="expression">MIT</license>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <copyright>© Trym Lund Flogard. All rights reserved.</copyright>
-        <tags>tray icon win32 systray notify mvvm .net 6</tags>
+        <tags>tray icon win32 systray notify mvvm .net 6 trayicon</tags>
+        <readme>docs\README.md</readme>
 
         <dependencies>
             <group targetFramework="net6.0">
@@ -21,10 +22,15 @@
             <group targetFramework="net7.0">
                 <dependency id="System.Drawing.Common" version="7.*" />
             </group>
+            <group targetFramework="net8.0">
+                <dependency id="System.Drawing.Common" version="8.*" />
+            </group>
         </dependencies>
     </metadata>
 
     <files>
+        <file target="docs\" src="README.md" />
+
         <file target="lib\net6.0\SimpleTrayIconProjections.dll"     src="bin\AnyCPU\Release\SimpleTrayIconProjections\net6.0\SimpleTrayIconProjections.dll" />
         <file target="lib\net6.0\SimpleTrayIconProjections.pdb"     src="bin\AnyCPU\Release\SimpleTrayIconProjections\net6.0\SimpleTrayIconProjections.pdb" />
         <file target="lib\net7.0\SimpleTrayIconProjections.dll"     src="bin\AnyCPU\Release\SimpleTrayIconProjections\net7.0\SimpleTrayIconProjections.dll" />
@@ -36,6 +42,8 @@
         <file target="runtimes\win-x64\native\SimpleTrayIcon.pdb" src="bin\x64\Release\SimpleTrayIcon\SimpleTrayIcon.pdb" />
         <file target="runtimes\win-x86\native\SimpleTrayIcon.dll" src="bin\x86\Release\SimpleTrayIcon\SimpleTrayIcon.dll" />
         <file target="runtimes\win-x86\native\SimpleTrayIcon.pdb" src="bin\x86\Release\SimpleTrayIcon\SimpleTrayIcon.pdb" />
+        <file target="runtimes\win-arm64\native\SimpleTrayIcon.dll" src="bin\arm64\Release\SimpleTrayIcon\SimpleTrayIcon.dll" />
+        <file target="runtimes\win-arm64\native\SimpleTrayIcon.pdb" src="bin\arm64\Release\SimpleTrayIcon\SimpleTrayIcon.pdb" />
 
     </files>
 </package>

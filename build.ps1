@@ -11,6 +11,7 @@ else {
  
 msbuild SimpleTrayIcon /p:Platform=x64 /p:Configuration=Release
 msbuild SimpleTrayIcon /p:Platform=Win32 /p:Configuration=Release
+msbuild SimpleTrayIcon /p:Platform=ARM64 /p:Configuration=Release
 
 dotnet build SimpleTrayIconProjections -c:Release /p:Platform=AnyCPU
 
@@ -18,5 +19,6 @@ nuget pack nuget\SimpleTrayIcon.nuspec -nopackageanalysis -basepath . -outputdir
 
 msbuild SimpleTrayIcon /p:Platform=x64 /p:Configuration=Release /p:TrayIconOneCore=true
 msbuild SimpleTrayIcon /p:Platform=Win32 /p:Configuration=Release /p:TrayIconOneCore=true
+msbuild SimpleTrayIcon /p:Platform=ARM64 /p:Configuration=Release /p:TrayIconOneCore=true
 
 nuget pack nuget\SimpleTrayIcon.onecore.nuspec -nopackageanalysis -basepath . -outputdirectory .\bin -version $version -properties  commit=$(git rev-parse HEAD)
