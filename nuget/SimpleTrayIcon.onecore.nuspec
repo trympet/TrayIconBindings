@@ -22,9 +22,6 @@
             <group targetFramework="net7.0">
                 <dependency id="System.Drawing.Common" version="7.*" />
             </group>
-            <group targetFramework="net8.0">
-                <dependency id="System.Drawing.Common" version="8.*" />
-            </group>
         </dependencies>
     </metadata>
 
