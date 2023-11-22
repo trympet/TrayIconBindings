@@ -19,8 +19,8 @@
             <group targetFramework="net6.0">
                 <dependency id="System.Drawing.Common" version="6.*" />
             </group>
-            <group targetFramework="net7.0">
-                <dependency id="System.Drawing.Common" version="7.*" />
+            <group targetFramework="net8.0">
+                <dependency id="System.Drawing.Common" version="8.*" />
             </group>
         </dependencies>
     </metadata>
@@ -30,8 +30,8 @@
 
         <file target="lib\net6.0\SimpleTrayIconProjections.dll"     src="bin\AnyCPU\Release\SimpleTrayIconProjections\net6.0\SimpleTrayIconProjections.dll" />
         <file target="lib\net6.0\SimpleTrayIconProjections.pdb"     src="bin\AnyCPU\Release\SimpleTrayIconProjections\net6.0\SimpleTrayIconProjections.pdb" />
-        <file target="lib\net7.0\SimpleTrayIconProjections.dll"     src="bin\AnyCPU\Release\SimpleTrayIconProjections\net7.0\SimpleTrayIconProjections.dll" />
-        <file target="lib\net7.0\SimpleTrayIconProjections.pdb"     src="bin\AnyCPU\Release\SimpleTrayIconProjections\net7.0\SimpleTrayIconProjections.pdb" />
+        <file target="lib\net8.0\SimpleTrayIconProjections.dll"     src="bin\AnyCPU\Release\SimpleTrayIconProjections\net8.0\SimpleTrayIconProjections.dll" />
+        <file target="lib\net8.0\SimpleTrayIconProjections.pdb"     src="bin\AnyCPU\Release\SimpleTrayIconProjections\net8.0\SimpleTrayIconProjections.pdb" />
         <file target="lib\net472\SimpleTrayIconProjections.dll"     src="bin\AnyCPU\Release\SimpleTrayIconProjections\net472\SimpleTrayIconProjections.dll" />
         <file target="lib\net472\SimpleTrayIconProjections.pdb"     src="bin\AnyCPU\Release\SimpleTrayIconProjections\net472\SimpleTrayIconProjections.pdb" />
   
