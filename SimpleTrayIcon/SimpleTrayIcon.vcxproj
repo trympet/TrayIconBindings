@@ -35,6 +35,8 @@
     <RootNamespace>TRAYICON</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <ProjectName>SimpleTrayIcon</ProjectName>
+    <ConfigurationType Condition="'$(ConfigurationType)' == ''">DynamicLibrary</ConfigurationType>
+    <OutputPath>$(OutputPath)\$(ConfigurationType)</OutputPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(TrayIconOneCore)' == 'true'">
     <GenerateManifest>false</GenerateManifest>
@@ -130,6 +132,12 @@
     <LinkIncremental>false</LinkIncremental>
     <RunCodeAnalysis>true</RunCodeAnalysis>
   </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
+    <ClCompile>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeLibrary Condition="'$(ConfigurationType)' == 'StaticLibrary'">MultiThreaded</RuntimeLibrary>
+    </ClCompile>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup>
     <ClCompile Condition="'$(TrayIconOneCore)' == 'true'">
       <PreprocessorDefinitions>_WINRT_DLL;WINRT_LEAN_AND_MEAN;%(PreprocessorDefinitions);WINAPI_FAMILY=WINAPI_FAMILY_DESKTOP_APP</PreprocessorDefinitions>
@@ -212,7 +220,6 @@
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>true</TreatWarningAsError>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -232,7 +239,6 @@
       <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <TreatWarningAsError>true</TreatWarningAsError>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -242,6 +248,12 @@
       <TreatLinkerWarningAsErrors>true</TreatLinkerWarningAsErrors>
       <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
     </Link>
+  </ItemDefinitionGroup>
+  <!-- Embed debug info into the obj file for static lib -->
+  <ItemDefinitionGroup Condition="'$(ConfigurationType)' == 'StaticLibrary'">
+    <ClCompile>
+      <DebugInformationFormat>OldStyle</DebugInformationFormat>
+    </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="dllapi.h" />

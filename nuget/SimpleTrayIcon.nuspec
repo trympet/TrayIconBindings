@@ -35,12 +35,22 @@
         <file target="lib\net472\SimpleTrayIconProjections.dll"     src="bin\AnyCPU\Release\SimpleTrayIconProjections\net472\SimpleTrayIconProjections.dll" />
         <file target="lib\net472\SimpleTrayIconProjections.pdb"     src="bin\AnyCPU\Release\SimpleTrayIconProjections\net472\SimpleTrayIconProjections.pdb" />
   
-        <file target="runtimes\win-x64\native\SimpleTrayIcon.dll" src="bin\x64\Release\SimpleTrayIcon\SimpleTrayIcon.dll" />
-        <file target="runtimes\win-x64\native\SimpleTrayIcon.pdb" src="bin\x64\Release\SimpleTrayIcon\SimpleTrayIcon.pdb" />
-        <file target="runtimes\win-x86\native\SimpleTrayIcon.dll" src="bin\x86\Release\SimpleTrayIcon\SimpleTrayIcon.dll" />
-        <file target="runtimes\win-x86\native\SimpleTrayIcon.pdb" src="bin\x86\Release\SimpleTrayIcon\SimpleTrayIcon.pdb" />
-        <file target="runtimes\win-arm64\native\SimpleTrayIcon.dll" src="bin\arm64\Release\SimpleTrayIcon\SimpleTrayIcon.dll" />
-        <file target="runtimes\win-arm64\native\SimpleTrayIcon.pdb" src="bin\arm64\Release\SimpleTrayIcon\SimpleTrayIcon.pdb" />
+        <file target="runtimes\win-x64\native\SimpleTrayIcon.dll" src="bin\x64\Release\SimpleTrayIcon\DynamicLibrary\SimpleTrayIcon.dll" />
+        <file target="runtimes\win-x64\native\SimpleTrayIcon.pdb" src="bin\x64\Release\SimpleTrayIcon\DynamicLibrary\SimpleTrayIcon.pdb" />
+        <file target="runtimes\win-x86\native\SimpleTrayIcon.dll" src="bin\x86\Release\SimpleTrayIcon\DynamicLibrary\SimpleTrayIcon.dll" />
+        <file target="runtimes\win-x86\native\SimpleTrayIcon.pdb" src="bin\x86\Release\SimpleTrayIcon\DynamicLibrary\SimpleTrayIcon.pdb" />
+        <file target="runtimes\win-arm64\native\SimpleTrayIcon.dll" src="bin\arm64\Release\SimpleTrayIcon\DynamicLibrary\SimpleTrayIcon.dll" />
+        <file target="runtimes\win-arm64\native\SimpleTrayIcon.pdb" src="bin\arm64\Release\SimpleTrayIcon\DynamicLibrary\SimpleTrayIcon.pdb" />
+
+        <file target="build\native\x64\SimpleTrayIconStatic.lib"  src="bin\x64\Release\SimpleTrayIcon\StaticLibrary\SimpleTrayIcon.lib" />
+        <file target="build\native\x64\SimpleTrayIconDynamic.lib" src="bin\x64\Release\SimpleTrayIcon\DynamicLibrary\SimpleTrayIcon.lib" />
+        <file target="build\native\win32\SimpleTrayIconStatic.lib"  src="bin\x86\Release\SimpleTrayIcon\StaticLibrary\SimpleTrayIcon.lib" />
+        <file target="build\native\win32\SimpleTrayIconDynamic.lib" src="bin\x86\Release\SimpleTrayIcon\DynamicLibrary\SimpleTrayIcon.lib" />
+        <file target="build\native\arm64\SimpleTrayIconStatic.lib"  src="bin\ARM64\Release\SimpleTrayIcon\StaticLibrary\SimpleTrayIcon.lib" />
+        <file target="build\native\arm64\SimpleTrayIconDynamic.lib" src="bin\ARM64\Release\SimpleTrayIcon\DynamicLibrary\SimpleTrayIcon.lib" />
+
+        <file target="build\SimpleTrayIcon.targets"           src="nuget\SimpleTrayIcon.targets" />
+        <file target="buildTransitive\SimpleTrayIcon.targets" src="nuget\SimpleTrayIcon.targets" />
 
     </files>
 </package>

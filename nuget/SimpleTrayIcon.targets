@@ -1,0 +1,42 @@
+<Project>
+    <PropertyGroup>
+        <SimpleTrayIconStaticLinking Condition=" '$(SimpleTrayIconStaticLinking)' == '' ">false</SimpleTrayIconStaticLinking>
+        <UseSimpleTrayIconStaticLib Condition=" '$(UseSimpleTrayIconStaticLib)' == '' ">false</UseSimpleTrayIconStaticLib>
+
+        <_SimpleTrayIconNormalizedRuntimeIdentifier Condition="$(RuntimeIdentifier.StartsWith('win')) and $(RuntimeIdentifier.EndsWith('x64'))">win-x64</_SimpleTrayIconNormalizedRuntimeIdentifier>
+        <_SimpleTrayIconNormalizedRuntimeIdentifier Condition="$(RuntimeIdentifier.StartsWith('win')) and $(RuntimeIdentifier.EndsWith('x86'))">win-x86</_SimpleTrayIconNormalizedRuntimeIdentifier>
+        <_SimpleTrayIconNormalizedRuntimeIdentifier Condition="$(RuntimeIdentifier.StartsWith('win')) and $(RuntimeIdentifier.EndsWith('arm64'))">win-arm64</_SimpleTrayIconNormalizedRuntimeIdentifier>
+
+        <_SimpleTrayIconPlatform Condition="$(RuntimeIdentifier.EndsWith('x64'))">x64</_SimpleTrayIconPlatform>
+        <_SimpleTrayIconPlatform Condition="$(RuntimeIdentifier.EndsWith('x86'))">x86</_SimpleTrayIconPlatform>
+        <_SimpleTrayIconPlatform Condition="$(RuntimeIdentifier.EndsWith('arm64'))">arm64</_SimpleTrayIconPlatform>
+
+        <_SimpleTrayIconDynamicLibPathInPackage Condition="'$(_SimpleTrayIconPlatform)' != ''">build/native/$(_SimpleTrayIconPlatform)/SimpleTrayIconDynamic.lib</_SimpleTrayIconDynamicLibPathInPackage>
+        <_SimpleTrayIconStaticLibPathInPackage Condition="'$(_SimpleTrayIconPlatform)' != ''">build/native/$(_SimpleTrayIconPlatform)/SimpleTrayIconStatic.lib</_SimpleTrayIconStaticLibPathInPackage>
+
+        <_SimpleTrayIconDynamicDllPathInPackage Condition="'$(_SimpleTrayIconNormalizedRuntimeIdentifier)' != ''">runtimes/$(_SimpleTrayIconNormalizedRuntimeIdentifier)/native/SimpleTrayIcon.dll</_SimpleTrayIconDynamicDllPathInPackage>
+        <_SimpleTrayIconDynamicPdbPathInPackage Condition="'$(_SimpleTrayIconNormalizedRuntimeIdentifier)' != ''">runtimes/$(_SimpleTrayIconNormalizedRuntimeIdentifier)/native/SimpleTrayIcon.pdb</_SimpleTrayIconDynamicPdbPathInPackage>
+
+        <_SimpleTrayIconDynamicDllPath Condition="'$(_SimpleTrayIconDynamicDllPathInPackage)' != ''">$(MSBuildThisFileDirectory)..\$(_SimpleTrayIconDynamicDllPathInPackage)</_SimpleTrayIconDynamicDllPath>
+        <_SimpleTrayIconDynamicLibPath Condition="'$(_SimpleTrayIconDynamicLibPathInPackage)' != ''">$(MSBuildThisFileDirectory)..\$(_SimpleTrayIconDynamicLibPathInPackage)</_SimpleTrayIconDynamicLibPath>
+        <_SimpleTrayIconDynamicPdbPath Condition="'$(_SimpleTrayIconDynamicPdbPathInPackage)' != ''">$(MSBuildThisFileDirectory)..\$(_SimpleTrayIconDynamicPdbPathInPackage)</_SimpleTrayIconDynamicPdbPath>
+
+        <_SimpleTrayIconStaticLibPath Condition="'$(_SimpleTrayIconStaticLibPathInPackage)' != ''">$(MSBuildThisFileDirectory)..\$(_SimpleTrayIconStaticLibPathInPackage)</_SimpleTrayIconStaticLibPath>
+
+        <_SimpleTrayIconStaticLinking Condition="'$(NativeLib)' != 'Static' and '$(_SimpleTrayIconStaticLibPath)' != ''">$(SimpleTrayIconStaticLinking)</_SimpleTrayIconStaticLinking>
+    </PropertyGroup>
+
+    <ItemGroup Condition="'$(_SimpleTrayIconStaticLinking)' == 'true'">
+        <NativeLibrary Condition="'$(UseSimpleTrayIconStaticLib)' == 'true'" Include="$(_SimpleTrayIconStaticLibPath)" />
+        <NativeLibrary Condition="'$(UseSimpleTrayIconStaticLib)' != 'true'" Include="$(_SimpleTrayIconDynamicLibPath)" />
+        <DirectPInvoke Include="SimpleTrayIcon" />
+    </ItemGroup>
+
+    <Target Name="_RemoveSimpleTrayIconFromOutput" BeforeTargets="ComputeLinkedFilesToPublish"
+            Condition="'$(_SimpleTrayIconStaticLinking)' == 'true'">
+        <ItemGroup Condition="'$(UseSimpleTrayIconStaticLib)' == 'true'">
+            <_AssembliesToSkipPublish Include="@(_ResolvedCopyLocalPublishAssets->HasMetadata('PathInPackage')->WithMetadataValue('PathInPackage', '$(_SimpleTrayIconDynamicDllPathInPackage)'))" />
+            <_AssembliesToSkipPublish Include="@(_ResolvedCopyLocalPublishAssets->HasMetadata('PathInPackage')->WithMetadataValue('PathInPackage', '$(_SimpleTrayIconDynamicPdbPathInPackage)'))" />
+        </ItemGroup>
+    </Target>
+</Project>
