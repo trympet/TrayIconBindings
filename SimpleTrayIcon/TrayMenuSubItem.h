@@ -18,5 +18,5 @@ public:
 	void Content(_In_ LPCWSTR value) noexcept;
 	void AddItem(TrayMenuItemBase& item) noexcept;
 	void RemoveItem(TrayMenuItemBase& item) noexcept;
-	void OnCommand(const WPARAM commandId) const noexcept override;
+	bool OnCommand(const WPARAM commandId) const noexcept override;
 };

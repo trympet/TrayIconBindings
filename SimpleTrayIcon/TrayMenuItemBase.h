@@ -19,7 +19,7 @@ public:
 	virtual void Detach() noexcept;
 	void RefreshIfAttached() noexcept;
 	virtual LPCWSTR Content() const noexcept;
-	virtual void OnCommand([[maybe_unused]] const WPARAM commandId) const noexcept {};
+	virtual bool OnCommand([[maybe_unused]] const WPARAM commandId) const noexcept { return false; };
 
 protected:
 	virtual UINT GetFlags() const noexcept;

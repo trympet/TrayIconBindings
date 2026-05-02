@@ -91,9 +91,13 @@ void TrayMenuSubItem::RemoveItem(TrayMenuItemBase& item) noexcept
 	}
 }
 
-void TrayMenuSubItem::OnCommand(const WPARAM commandId) const noexcept
+bool TrayMenuSubItem::OnCommand(const WPARAM commandId) const noexcept
 {
 	for (const auto& item : m_items) {
-		item.get().OnCommand(commandId);
+		if (item.get().OnCommand(commandId)) {
+			return true;
+		}
 	}
+
+	return false;
 }

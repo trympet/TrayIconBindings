@@ -19,7 +19,7 @@ public:
 	LPCWSTR Content() const noexcept;
 	void Content(_In_ LPCWSTR value) noexcept;
 	void IsChecked(const BOOL value) noexcept;
-	void OnCommand(const WPARAM commandId) const noexcept;
+	bool OnCommand(const WPARAM commandId) const noexcept override;
 
 protected:
 	UINT GetFlags() const noexcept;

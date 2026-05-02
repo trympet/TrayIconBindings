@@ -156,7 +156,9 @@ LRESULT TrayIcon::TrayIconWndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM
 	case WM_COMMAND:
 		for (size_t i = 0; i < m_items.size(); i++)
 		{
-			m_items.at(i).get().OnCommand(wParam);
+			if (m_items.at(i).get().OnCommand(wParam)) {
+				break;
+			}
 		}
 		break;
 	case WM_TRAYMOUSEMESSAGE:

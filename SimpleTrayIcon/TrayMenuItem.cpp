@@ -23,11 +23,14 @@ void TrayMenuItem::IsChecked(const BOOL value) noexcept
 	RefreshIfAttached();
 }
 
-void TrayMenuItem::OnCommand(const WPARAM commandId) const noexcept
+bool TrayMenuItem::OnCommand(const WPARAM commandId) const noexcept
 {
 	if (commandId == GetId()) {
 		m_onClicked(this, GetId());
+		return true;
 	}
+
+	return false;
 }
 
 UINT TrayMenuItem::GetFlags() const noexcept
