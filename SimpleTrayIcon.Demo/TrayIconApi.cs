@@ -36,4 +36,19 @@ public class SimpleTrayIconApi
 
     [DllImport("SimpleTrayIcon.dll", ExactSpelling = true, CharSet = CharSet.Unicode)]
     public static extern int TrayMenuItemIsChecked(IntPtr instance, bool value);
+
+    [DllImport("SimpleTrayIcon.dll", ExactSpelling = true, CharSet = CharSet.Unicode)]
+    public static extern int TrayMenuSubItemCreate(out IntPtr pInstance);
+
+    [DllImport("SimpleTrayIcon.dll", ExactSpelling = true, CharSet = CharSet.Unicode)]
+    public static extern int TrayMenuSubItemRelease(ref IntPtr pInstance);
+
+    [DllImport("SimpleTrayIcon.dll", ExactSpelling = true, CharSet = CharSet.Unicode)]
+    public static extern int TrayMenuSubItemContent(IntPtr instance, [MarshalAs(UnmanagedType.LPWStr)] string value);
+
+    [DllImport("SimpleTrayIcon.dll", ExactSpelling = true, CharSet = CharSet.Unicode)]
+    public static extern int TrayMenuSubItemAdd(IntPtr instance, IntPtr pTrayMenuItem);
+
+    [DllImport("SimpleTrayIcon.dll", ExactSpelling = true, CharSet = CharSet.Unicode)]
+    public static extern int TrayMenuSubItemRemove(IntPtr instance, IntPtr pTrayMenuItem);
 }

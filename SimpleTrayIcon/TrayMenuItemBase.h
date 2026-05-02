@@ -7,13 +7,16 @@ class TrayMenuItemBase
 private:
 	static UINT s_nextItemId;
 	UINT m_itemId;
+
+protected:
 	HWND m_hWnd = NULL;
 	HMENU m_hMenu = NULL;
+
 public:
 	TrayMenuItemBase();
 	~TrayMenuItemBase();
-	void Attach(const HWND hWnd, const HMENU hMenu) noexcept;
-	void Detach() noexcept;
+	virtual void Attach(const HWND hWnd, const HMENU hMenu) noexcept;
+	virtual void Detach() noexcept;
 	void RefreshIfAttached() noexcept;
 	virtual LPCWSTR Content() const noexcept;
 	virtual void OnCommand([[maybe_unused]] const WPARAM commandId) const noexcept {};
@@ -27,6 +30,10 @@ protected:
 
 	HWND GetHWnd() const noexcept {
 		return m_hWnd;
+	}
+
+	HMENU GetHMenu() const noexcept {
+		return m_hMenu;
 	}
 };
 

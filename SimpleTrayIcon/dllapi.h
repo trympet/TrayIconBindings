@@ -1,6 +1,7 @@
 #pragma once
 #include "MyTrayMenu.h"
 #include "TrayMenuSeparator.h"
+#include "TrayMenuSubItem.h"
 #define TRAYAPI EXTERN_C __declspec(dllexport) HRESULT WINAPI
 
 TRAYAPI TrayMenuCreate(const HICON hIcon, const _In_ WCHAR tip[128], const _In_ TrayMenuClickHandler onDoubleClick, _Outptr_result_nullonfailure_ MyTrayMenu** pInstance) noexcept;
@@ -18,3 +19,9 @@ TRAYAPI TrayMenuItemIsChecked(_In_ TrayMenuItem* pInstance, const BOOL value) no
 
 TRAYAPI TrayMenuSeparatorCreate(_Outptr_result_nullonfailure_ TrayMenuSeparator** pInstance) noexcept;
 TRAYAPI TrayMenuSeparatorRelease(const _Inout_ TrayMenuSeparator** pInstance) noexcept;
+
+TRAYAPI TrayMenuSubItemCreate(_Outptr_result_nullonfailure_ TrayMenuSubItem** pInstance) noexcept;
+TRAYAPI TrayMenuSubItemRelease(const _Inout_ TrayMenuSubItem** pInstance) noexcept;
+TRAYAPI TrayMenuSubItemContent(_In_ TrayMenuSubItem* pInstance, _In_ LPCWSTR value) noexcept;
+TRAYAPI TrayMenuSubItemAdd(_In_ TrayMenuSubItem* pInstance, _In_ TrayMenuItemBase* pTrayMenuItem) noexcept;
+TRAYAPI TrayMenuSubItemRemove(_In_ TrayMenuSubItem* pInstance, _In_ TrayMenuItemBase* pTrayMenuItem) noexcept;

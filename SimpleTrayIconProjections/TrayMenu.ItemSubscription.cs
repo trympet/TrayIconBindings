@@ -9,7 +9,7 @@ namespace SimpleTrayIcon
 {
     public partial class TrayMenu
     {
-        private static class ItemSubscription
+        internal static class ItemSubscription
         {
             public static ItemSubscription<T>? Create<T>(ICollection<T> items, Action<T> onAdded, Action<T> onRemoved)
             {
@@ -22,7 +22,7 @@ namespace SimpleTrayIcon
             }
         }
 
-        private sealed class ItemSubscription<T> : IDisposable
+        internal sealed class ItemSubscription<T> : IDisposable
         {
             private readonly ICollection<T> _items;
             private readonly INotifyCollectionChanged _notifyingCollection;

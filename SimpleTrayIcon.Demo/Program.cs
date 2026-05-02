@@ -37,8 +37,12 @@ namespace SimpleTrayIcon.Demo
         {
             var menu = new TrayMenu(GetNextIcon(), "Tooltip", true);
             var item1 = new TrayMenuItem { Content = "Item1" };
+            var subMenu = new TrayMenuSubItem { Content = "Sub menu" };
+            var nestedItem = new TrayMenuItem { Content = "Nested item" };
+            var addNestedItem = new TrayMenuItem { Content = "Add nested item" };
 
             int itemNumber = 1;
+            int nestedItemNumber = 1;
             void OnClicked(object? sender, EventArgs e)
             {
                 if (sender is TrayMenuItem item)
@@ -46,15 +50,35 @@ namespace SimpleTrayIcon.Demo
                     menu.Icon = GetNextIcon();
                     item.IsChecked = !item.IsChecked;
                     Console.WriteLine($"{item.Content} clicked.");
-                    var newItem = new TrayMenuItem { Content = $"Item{++itemNumber}" };
-                    newItem.Click += OnClicked;
-                    menu.Items.Add(newItem);
-                    menu.Items.Add(new TrayMenuSeparator());
                 }
             }
 
-            item1.Click += OnClicked;
+            void OnTopLevelClicked(object? sender, EventArgs e)
+            {
+                OnClicked(sender, e);
+                var newItem = new TrayMenuItem { Content = $"Item{++itemNumber}" };
+                newItem.Click += OnClicked;
+                menu.Items.Add(newItem);
+                menu.Items.Add(new TrayMenuSeparator());
+            }
+
+            void OnAddNestedClicked(object? sender, EventArgs e)
+            {
+                OnClicked(sender, e);
+                var newNestedItem = new TrayMenuItem { Content = $"Nested item {++nestedItemNumber}" };
+                newNestedItem.Click += OnClicked;
+                subMenu.Items.Add(newNestedItem);
+            }
+
+            item1.Click += OnTopLevelClicked;
+            nestedItem.Click += OnClicked;
+            addNestedItem.Click += OnAddNestedClicked;
             menu.Items.Add(item1);
+            menu.Items.Add(new TrayMenuSeparator());
+            subMenu.Items.Add(nestedItem);
+            subMenu.Items.Add(new TrayMenuSeparator());
+            subMenu.Items.Add(addNestedItem);
+            menu.Items.Add(subMenu);
 
             menu.DoubleClick += (_, _) => Console.WriteLine("Double click.");
 
@@ -98,9 +122,20 @@ namespace SimpleTrayIcon.Demo
             SimpleTrayIconApi.TrayMenuItemContent(hItem2, "item2");
             SimpleTrayIconApi.TrayMenuItemContent(hItem3, item3Content);
 
+            SimpleTrayIconApi.TrayMenuSubItemCreate(out var hSubMenu);
+            SimpleTrayIconApi.TrayMenuSubItemContent(hSubMenu, "sub menu");
+
+            SimpleTrayIconApi.TrayMenuItemCreate((s, e) =>
+            {
+                Console.WriteLine("Nested clicked");
+            }, out var hNestedItem);
+            SimpleTrayIconApi.TrayMenuItemContent(hNestedItem, "nested item");
+            SimpleTrayIconApi.TrayMenuSubItemAdd(hSubMenu, hNestedItem);
+
             SimpleTrayIconApi.TrayMenuAdd(hMenu, hItem1);
             SimpleTrayIconApi.TrayMenuAdd(hMenu, hItem2);
             SimpleTrayIconApi.TrayMenuAdd(hMenu, hItem3);
+            SimpleTrayIconApi.TrayMenuAdd(hMenu, hSubMenu);
 
             SimpleTrayIconApi.TrayMenuShow(hMenu);
 

@@ -266,6 +266,7 @@
     <ClInclude Include="TrayMenuItemBase.h" />
     <ClInclude Include="TrayMenuPopup.h" />
     <ClInclude Include="TrayMenuSeparator.h" />
+    <ClInclude Include="TrayMenuSubItem.h" />
     <ClInclude Include="Win32Exception.h" />
   </ItemGroup>
   <ItemGroup>
@@ -286,6 +287,7 @@
     <ClCompile Include="TrayMenuItemBase.cpp" />
     <ClCompile Include="TrayMenuPopup.cpp" />
     <ClCompile Include="TrayMenuSeparator.cpp" />
+    <ClCompile Include="TrayMenuSubItem.cpp" />
     <ClCompile Include="Win32Exception.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

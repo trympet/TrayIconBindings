@@ -31,6 +31,12 @@ namespace SimpleTrayIcon
         private readonly int dummy;
     }
 
+    [StructLayout(LayoutKind.Sequential)]
+    internal readonly unsafe struct TrayMenuSubItemHandle
+    {
+        private readonly int dummy;
+    }
+
     internal sealed unsafe class NativeMethods
     {
         private const string SimpleTrayIcon = "SimpleTrayIcon.dll";
@@ -130,6 +136,42 @@ namespace SimpleTrayIcon
             Marshal.ThrowExceptionForHR(TrayMenuSeparatorRelease(pointer));
         }
 
+        public static IntPtr TrayMenuSubItemCreate()
+        {
+            TrayMenuSubItemHandle* pointer;
+            Marshal.ThrowExceptionForHR(TrayMenuSubItemCreate(&pointer));
+            return (IntPtr)pointer;
+        }
+
+        public static void TrayMenuSubItemRelease(ref IntPtr pInstance)
+        {
+            TrayMenuSubItemHandle** pointer = (TrayMenuSubItemHandle**)Unsafe.AsPointer(ref pInstance);
+            Marshal.ThrowExceptionForHR(TrayMenuSubItemRelease(pointer));
+        }
+
+        public static void TrayMenuSubItemContent(IntPtr pInstance, string value)
+        {
+            fixed (char* chars = value)
+            {
+                TrayMenuSubItemHandle* pointer = (TrayMenuSubItemHandle*)pInstance;
+                Marshal.ThrowExceptionForHR(TrayMenuSubItemContent(pointer, chars));
+            }
+        }
+
+        public static void TrayMenuSubItemAdd(IntPtr pInstance, IntPtr pTrayMenuItem)
+        {
+            TrayMenuSubItemHandle* pointer = (TrayMenuSubItemHandle*)pInstance;
+            TrayMenuItemHandle* menuItemPointer = (TrayMenuItemHandle*)pTrayMenuItem;
+            Marshal.ThrowExceptionForHR(TrayMenuSubItemAdd(pointer, menuItemPointer));
+        }
+
+        public static void TrayMenuSubItemRemove(IntPtr pInstance, IntPtr pTrayMenuItem)
+        {
+            TrayMenuSubItemHandle* pointer = (TrayMenuSubItemHandle*)pInstance;
+            TrayMenuItemHandle* menuItemPointer = (TrayMenuItemHandle*)pTrayMenuItem;
+            Marshal.ThrowExceptionForHR(TrayMenuSubItemRemove(pointer, menuItemPointer));
+        }
+
         [DllImport(SimpleTrayIcon, CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         private static extern int TrayMenuCreate(IntPtr hIcon, char* tip, delegate* unmanaged[Stdcall]<TrayMenuHandle*, void> onDoubleClick, TrayMenuHandle** pInstance);
 
@@ -168,5 +210,20 @@ namespace SimpleTrayIcon
 
         [DllImport(SimpleTrayIcon, CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         private static extern int TrayMenuSeparatorRelease(TrayMenuSeparatorHandle** pInstance);
+
+        [DllImport(SimpleTrayIcon, CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        private static extern int TrayMenuSubItemCreate(TrayMenuSubItemHandle** pInstance);
+
+        [DllImport(SimpleTrayIcon, CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        private static extern int TrayMenuSubItemRelease(TrayMenuSubItemHandle** pInstance);
+
+        [DllImport(SimpleTrayIcon, CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        private static extern int TrayMenuSubItemContent(TrayMenuSubItemHandle* pInstance, char* value);
+
+        [DllImport(SimpleTrayIcon, CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        private static extern int TrayMenuSubItemAdd(TrayMenuSubItemHandle* pInstance, TrayMenuItemHandle* pTrayMenuItem);
+
+        [DllImport(SimpleTrayIcon, CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        private static extern int TrayMenuSubItemRemove(TrayMenuSubItemHandle* pInstance, TrayMenuItemHandle* pTrayMenuItem);
     }
 }

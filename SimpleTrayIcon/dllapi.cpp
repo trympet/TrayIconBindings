@@ -160,3 +160,57 @@ TRAYAPI TrayMenuSeparatorRelease(const _Inout_ TrayMenuSeparator** pInstance) no
 	return S_OK;
 }
 
+TRAYAPI TrayMenuSubItemCreate(_Outptr_result_nullonfailure_ TrayMenuSubItem** pInstance) noexcept
+{
+	GUARD_NOT_NULL(pInstance);
+	*pInstance = NULL;
+
+	API_TRY
+		* pInstance = new TrayMenuSubItem();
+	API_CATCH(
+		if (pInstance) {
+			if (*pInstance) {
+				delete* pInstance;
+			}
+
+			*pInstance = NULL;
+		}
+	)
+}
+
+TRAYAPI TrayMenuSubItemRelease(const _Inout_ TrayMenuSubItem** pInstance) noexcept
+{
+	if (pInstance) {
+		if (*pInstance) {
+			delete* pInstance;
+		}
+
+		*pInstance = NULL;
+	}
+
+	return S_OK;
+}
+
+TRAYAPI TrayMenuSubItemContent(_In_ TrayMenuSubItem* pInstance, _In_ LPCWSTR value) noexcept
+{
+	GUARD_NOT_NULL(pInstance);
+	pInstance->Content(value);
+	return S_OK;
+}
+
+TRAYAPI TrayMenuSubItemAdd(_In_ TrayMenuSubItem* pInstance, _In_ TrayMenuItemBase* pTrayMenuItem) noexcept
+{
+	GUARD_NOT_NULL(pInstance);
+	GUARD_NOT_NULL(pTrayMenuItem);
+	pInstance->AddItem(*pTrayMenuItem);
+	return S_OK;
+}
+
+TRAYAPI TrayMenuSubItemRemove(_In_ TrayMenuSubItem* pInstance, _In_ TrayMenuItemBase* pTrayMenuItem) noexcept
+{
+	GUARD_NOT_NULL(pInstance);
+	GUARD_NOT_NULL(pTrayMenuItem);
+	pInstance->RemoveItem(*pTrayMenuItem);
+	return S_OK;
+}
+
