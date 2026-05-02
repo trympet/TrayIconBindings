@@ -19,8 +19,8 @@
   </ItemGroup>
 
   <ItemGroup>
-	  <Content Condition="'$(Configuration)' == 'Debug'" Include="..\bin\x64\Debug\SimpleTrayIcon\SimpleTrayIcon.dll" CopyToOutputDirectory="Always" Visible="false" />
-	  <Content Condition="'$(Configuration)' == 'Release'" Include="..\bin\x64\Release\SimpleTrayIcon\SimpleTrayIcon.dll" CopyToOutputDirectory="Always" Visible="false" />
+	  <Content Condition="'$(Configuration)' == 'Debug'" Include="..\bin\x64\Debug\SimpleTrayIcon\DynamicLibrary\SimpleTrayIcon.dll" CopyToOutputDirectory="Always" Visible="false" />
+	  <Content Condition="'$(Configuration)' == 'Release'" Include="..\bin\x64\Release\SimpleTrayIcon\DynamicLibrary\SimpleTrayIcon.dll" CopyToOutputDirectory="Always" Visible="false" />
   </ItemGroup>
 
   <ItemGroup>
