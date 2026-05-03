@@ -38,6 +38,9 @@ public class SimpleTrayIconApi
     public static extern int TrayMenuItemIsChecked(IntPtr instance, bool value);
 
     [DllImport("SimpleTrayIcon.dll", ExactSpelling = true, CharSet = CharSet.Unicode)]
+    public static extern int TrayMenuItemIsCheckable(IntPtr instance, bool value);
+
+    [DllImport("SimpleTrayIcon.dll", ExactSpelling = true, CharSet = CharSet.Unicode)]
     public static extern int TrayMenuSubItemCreate(out IntPtr pInstance);
 
     [DllImport("SimpleTrayIcon.dll", ExactSpelling = true, CharSet = CharSet.Unicode)]

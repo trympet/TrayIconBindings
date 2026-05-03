@@ -16,6 +16,7 @@ TRAYAPI TrayMenuItemCreate(const _In_ TrayMenuItemClickHandler onClick, _Outptr_
 TRAYAPI TrayMenuItemRelease(const _Inout_ TrayMenuItem** pInstance) noexcept;
 TRAYAPI TrayMenuItemContent(_In_ TrayMenuItem* pInstance, _In_ LPCWSTR value) noexcept;
 TRAYAPI TrayMenuItemIsChecked(_In_ TrayMenuItem* pInstance, const BOOL value) noexcept;
+TRAYAPI TrayMenuItemIsCheckable(_In_ TrayMenuItem* pInstance, const BOOL value) noexcept;
 
 TRAYAPI TrayMenuSeparatorCreate(_Outptr_result_nullonfailure_ TrayMenuSeparator** pInstance) noexcept;
 TRAYAPI TrayMenuSeparatorRelease(const _Inout_ TrayMenuSeparator** pInstance) noexcept;

@@ -23,10 +23,18 @@ void TrayMenuItem::IsChecked(const BOOL value) noexcept
 	RefreshIfAttached();
 }
 
+void TrayMenuItem::IsCheckable(const BOOL value) noexcept
+{
+	m_isCheckable = value;
+	RefreshIfAttached();
+}
+
 bool TrayMenuItem::OnCommand(const WPARAM commandId) const noexcept
 {
 	if (commandId == GetId()) {
-		m_onClicked(this, GetId());
+		if (m_isCheckable) {
+			m_onClicked(this, GetId());
+		}
 		return true;
 	}
 
@@ -38,6 +46,9 @@ UINT TrayMenuItem::GetFlags() const noexcept
 	UINT result = MF_STRING;
 	if (m_isChecked) {
 		result |= MF_CHECKED;
+	}
+	if (!m_isCheckable) {
+		result |= MF_GRAYED | MF_DISABLED;
 	}
 	return result;
 }
