@@ -13,12 +13,14 @@ private:
 	TrayMenuItemClickHandler m_onClicked;
 	std::wstring m_content;
 	BOOL m_isChecked = false;
+	BOOL m_isCheckable = true;
 
 public:
 	TrayMenuItem(const TrayMenuItemClickHandler onClicked) noexcept;
 	LPCWSTR Content() const noexcept;
 	void Content(_In_ LPCWSTR value) noexcept;
 	void IsChecked(const BOOL value) noexcept;
+	void IsCheckable(const BOOL value) noexcept;
 	bool OnCommand(const WPARAM commandId) const noexcept override;
 
 protected:

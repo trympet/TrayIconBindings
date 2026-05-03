@@ -29,6 +29,7 @@ namespace SimpleTrayIcon
         private bool _disposedValue;
         private string _content = string.Empty;
         private bool _isChecked;
+        private bool _isCheckable = true;
 
         public TrayMenuItem()
         {
@@ -76,6 +77,20 @@ namespace SimpleTrayIcon
                 {
                     _isChecked = value;
                     TrayMenuItemIsChecked(HInstance, value);
+                }
+            }
+        }
+
+        public virtual bool IsCheckable
+        {
+            get => _isCheckable;
+            set
+            {
+                GuardNotDisposed();
+                if (_isCheckable != value)
+                {
+                    _isCheckable = value;
+                    TrayMenuItemIsCheckable(HInstance, value);
                 }
             }
         }

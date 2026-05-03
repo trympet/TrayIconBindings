@@ -123,6 +123,12 @@ namespace SimpleTrayIcon
             Marshal.ThrowExceptionForHR(TrayMenuItemIsChecked(pointer, value ? 1 : 0));
         }
 
+        public static void TrayMenuItemIsCheckable(IntPtr pInstance, bool value)
+        {
+            TrayMenuItemHandle* pointer = (TrayMenuItemHandle*)pInstance;
+            Marshal.ThrowExceptionForHR(TrayMenuItemIsCheckable(pointer, value ? 1 : 0));
+        }
+
         public static IntPtr TrayMenuSeparatorCreate()
         {
             TrayMenuSeparatorHandle* pointer;
@@ -204,6 +210,9 @@ namespace SimpleTrayIcon
 
         [DllImport(SimpleTrayIcon, CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         private static extern int TrayMenuItemIsChecked(TrayMenuItemHandle* pInstance, int value);
+
+        [DllImport(SimpleTrayIcon, CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
+        private static extern int TrayMenuItemIsCheckable(TrayMenuItemHandle* pInstance, int value);
 
         [DllImport(SimpleTrayIcon, CallingConvention = CallingConvention.StdCall, ExactSpelling = true)]
         private static extern int TrayMenuSeparatorCreate(TrayMenuSeparatorHandle** pInstance);

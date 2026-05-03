@@ -44,6 +44,7 @@ namespace SimpleTrayIcon.Demo
             var subMenu = new TrayMenuSubItem { Content = "Sub menu" };
             var nestedItem = new TrayMenuItem { Content = "Nested item" };
             var addNestedItem = new TrayMenuItem { Content = "Add nested item" };
+            var disabledCheckedItem = new TrayMenuItem { Content = "Checked disabled item", IsChecked = true, IsCheckable = false };
 
             int itemNumber = 1;
             int nestedItemNumber = 1;
@@ -78,6 +79,8 @@ namespace SimpleTrayIcon.Demo
             nestedItem.Click += OnClicked;
             addNestedItem.Click += OnAddNestedClicked;
             menu.Items.Add(item1);
+            menu.Items.Add(new TrayMenuSeparator());
+            menu.Items.Add(disabledCheckedItem);
             menu.Items.Add(new TrayMenuSeparator());
             subMenu.Items.Add(nestedItem);
             subMenu.Items.Add(new TrayMenuSeparator());
@@ -143,6 +146,8 @@ namespace SimpleTrayIcon.Demo
             SimpleTrayIconApi.TrayMenuItemContent(hItem1, "item1");
             SimpleTrayIconApi.TrayMenuItemContent(hItem2, "item2");
             SimpleTrayIconApi.TrayMenuItemContent(hItem3, item3Content);
+            SimpleTrayIconApi.TrayMenuItemIsChecked(hItem2, true);
+            SimpleTrayIconApi.TrayMenuItemIsCheckable(hItem2, false);
 
             SimpleTrayIconApi.TrayMenuSubItemCreate(out var hSubMenu);
             SimpleTrayIconApi.TrayMenuSubItemContent(hSubMenu, "sub menu");

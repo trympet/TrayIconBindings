@@ -129,6 +129,13 @@ TRAYAPI TrayMenuItemIsChecked(_In_ TrayMenuItem* pInstance, const BOOL value) no
 	return S_OK;
 }
 
+TRAYAPI TrayMenuItemIsCheckable(_In_ TrayMenuItem* pInstance, const BOOL value) noexcept
+{
+	GUARD_NOT_NULL(pInstance);
+	pInstance->IsCheckable(value);
+	return S_OK;
+}
+
 TRAYAPI TrayMenuSeparatorCreate(_Outptr_result_nullonfailure_ TrayMenuSeparator** pInstance) noexcept
 {
 	GUARD_NOT_NULL(pInstance);
