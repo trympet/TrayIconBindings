@@ -51,12 +51,15 @@ void TrayMenuSubItem::Detach() noexcept
 		item.get().Detach();
 	}
 
-	TrayMenuItemBase::Detach();
-
-	if (m_hSubMenu) {
-		DestroyMenu(m_hSubMenu);
-		m_hSubMenu = NULL;
+	// DeleteMenu destroys the attached submenu; unattached popup menus still need explicit cleanup.
+	if (GetHMenu()) {
+		TrayMenuItemBase::Detach();
 	}
+	else if (m_hSubMenu) {
+		DestroyMenu(m_hSubMenu);
+	}
+
+	m_hSubMenu = NULL;
 }
 
 LPCWSTR TrayMenuSubItem::Content() const noexcept
