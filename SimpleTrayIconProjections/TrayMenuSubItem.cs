@@ -79,11 +79,6 @@ namespace SimpleTrayIcon
             {
                 if (disposing)
                 {
-                    foreach (var item in _items)
-                    {
-                        (item as IDisposable)?.Dispose();
-                    }
-
                     _itemSubscription?.Dispose();
                 }
 
@@ -91,6 +86,14 @@ namespace SimpleTrayIcon
                 {
                     TrayMenuSubItemRelease(ref HInstanceRef);
                     HInstanceRef = IntPtr.Zero;
+                }
+
+                if (disposing)
+                {
+                    foreach (var item in _items)
+                    {
+                        (item as IDisposable)?.Dispose();
+                    }
                 }
 
                 _itemSubscription = null;

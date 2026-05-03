@@ -16,6 +16,7 @@ namespace SimpleTrayIcon.Demo
             {
                 Console.WriteLine("1) Managed demo");
                 Console.WriteLine("2) PInvoke demo");
+                Console.WriteLine("3) dispose demo");
                 var input = Console.ReadLine();
                 switch (c = input?.FirstOrDefault())
                 {
@@ -24,6 +25,9 @@ namespace SimpleTrayIcon.Demo
                         break;
                     case '2':
                         PInvokeDemo();
+                        break;
+                    case '3':
+                        DisposeDemo();
                         break;
                     default:
                         Console.WriteLine("Invalid input.");
@@ -83,6 +87,24 @@ namespace SimpleTrayIcon.Demo
             menu.DoubleClick += (_, _) => Console.WriteLine("Double click.");
 
             NativeMethods.RunLoop();
+        }
+
+        private static void DisposeDemo()
+        {
+            {
+                using var menu = new TrayMenu(GetNextIcon(), "Dispose verification", true);
+                var subMenu = new TrayMenuSubItem { Content = "Sub menu" };
+                var nestedItem = new TrayMenuItem { Content = "Nested item" };
+                var separator = new TrayMenuSeparator();
+                var anotherNestedItem = new TrayMenuItem { Content = "Another nested item" };
+
+                subMenu.Items.Add(nestedItem);
+                subMenu.Items.Add(separator);
+                subMenu.Items.Add(anotherNestedItem);
+                menu.Items.Add(subMenu);
+            }
+
+            Console.WriteLine("Dispose verification completed.");
         }
 
         private static Icon GetNextIcon()
