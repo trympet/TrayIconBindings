@@ -17,7 +17,7 @@ void TrayMenuItemBase::Attach(const HWND hWnd, const HMENU hMenu) noexcept
 		return;
 	}
 
-	if (hMenu == NULL) {
+	if (!IsMenu(hMenu)) {
 		return;
 	}
 
@@ -30,7 +30,7 @@ void TrayMenuItemBase::Attach(const HWND hWnd, const HMENU hMenu) noexcept
 
 void TrayMenuItemBase::Detach() noexcept
 {
-	if (m_hMenu) {
+	if (IsMenu(m_hMenu)) {
 		DeleteMenu(m_hMenu, m_itemId, MF_BYCOMMAND);
 		m_hMenu = NULL;
 	}
@@ -40,7 +40,7 @@ void TrayMenuItemBase::Detach() noexcept
 
 void TrayMenuItemBase::RefreshIfAttached() noexcept
 {
-	if (m_hMenu) {
+	if (IsMenu(m_hMenu)) {
 		auto info = MENUITEMINFO{ .cbSize = sizeof(MENUITEMINFO) };
 		GetMenuItemInfo(m_hMenu, m_itemId, false, &info);
 		info.dwTypeData = (LPWSTR)Content();

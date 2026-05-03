@@ -29,11 +29,11 @@ TrayMenuPopup::~TrayMenuPopup()
 		x.get().Detach();
 	}
 
-	if (m_hSubMenu) {
+	if (IsMenu(m_hSubMenu)) {
 		DestroyMenu(m_hSubMenu);
 	}
 
-	if (m_hMenu) {
+	if (IsMenu(m_hMenu)) {
 		DestroyMenu(m_hMenu);
 	}
 }
