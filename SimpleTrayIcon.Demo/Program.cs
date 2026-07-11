@@ -41,6 +41,7 @@ namespace SimpleTrayIcon.Demo
         {
             var menu = new TrayMenu(GetNextIcon(), "Tooltip", true);
             var item1 = new TrayMenuItem { Content = "Item1" };
+            var item2 = new TrayMenuItem { Content = "Rename" };
             var subMenu = new TrayMenuSubItem { Content = "Sub menu" };
             var nestedItem = new TrayMenuItem { Content = "Nested item" };
             var addNestedItem = new TrayMenuItem { Content = "Add nested item" };
@@ -67,6 +68,17 @@ namespace SimpleTrayIcon.Demo
                 menu.Items.Add(new TrayMenuSeparator());
             }
 
+            void OnRenameClicked(object? sender, EventArgs e)
+            {
+                if (sender is TrayMenuItem item)
+                {
+                    menu.Icon = GetNextIcon();
+                    item.IsChecked = !item.IsChecked;
+                    item.Content += ".";
+                    Console.WriteLine($"{item.Content} clicked.");
+                }
+            }
+
             void OnAddNestedClicked(object? sender, EventArgs e)
             {
                 OnClicked(sender, e);
@@ -76,9 +88,11 @@ namespace SimpleTrayIcon.Demo
             }
 
             item1.Click += OnTopLevelClicked;
+            item2.Click += OnRenameClicked;
             nestedItem.Click += OnClicked;
             addNestedItem.Click += OnAddNestedClicked;
             menu.Items.Add(item1);
+            menu.Items.Add(item2);
             menu.Items.Add(new TrayMenuSeparator());
             menu.Items.Add(disabledCheckedItem);
             menu.Items.Add(new TrayMenuSeparator());

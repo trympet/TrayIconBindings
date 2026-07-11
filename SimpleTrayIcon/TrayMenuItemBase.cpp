@@ -44,7 +44,7 @@ void TrayMenuItemBase::RefreshIfAttached() noexcept
 		auto info = MENUITEMINFO{ .cbSize = sizeof(MENUITEMINFO) };
 		GetMenuItemInfo(m_hMenu, m_itemId, false, &info);
 		info.dwTypeData = (LPWSTR)Content();
-		info.fMask |= MIIM_FTYPE | MIIM_STATE;
+		info.fMask |= MIIM_FTYPE | MIIM_STATE | MIIM_STRING;
 		info.fState = GetFlags();
 		SetMenuItemInfo(m_hMenu, m_itemId, false, &info);
 		DrawMenuBar(m_hWnd);
